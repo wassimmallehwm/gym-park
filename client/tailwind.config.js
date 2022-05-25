@@ -1,9 +1,10 @@
 module.exports = {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: false, // or 'media' or 'class',
   theme: {
     extend: {
       colors: {
-        primary: {
+        'primary': {
           50: '#e6ecee',
           100: '#b5c6cd',
           200: '#84a1ac',
@@ -12,7 +13,7 @@ module.exports = {
           500: '#084259',
           600: '#073b50'
         },
-        secondary: {
+        'secondary': {
           50: '#f4e6eb',
           100: '#ddb3c2',
           200: '#c6819a',
@@ -23,6 +24,10 @@ module.exports = {
         }  
       }
     },
+  },
+  variants: {
+    animation: ["motion-safe"],
+    extend: {},
   },
   plugins: [],
 }

@@ -14,18 +14,19 @@ const Users = () => {
 
     const initUser = {
         email: "",
-        enabled: false,
         firstname: "",
-        imagePath: "",
         lastname: "",
-        role: "",
-        username: "",
+        roles: [],
+        phone: "",
+        sex: "",
+        birthdate: "",
         _id: ""
     }
 
     const [loading, setLoading] = useState<any>(false);
     const [tableKey, setTableKey] = useState<any>(false);
     const [usersList, setUsersList] = useState<any>(null);
+    const [rolesList, setRolesList] = useState<any>(null);
     const [editUser, setEditUser] = useState<any>(initUser);
     const [deleteUser, setDeleteUser] = useState<any>();
     const [editUserModal, setEditUserModal] = useState<any>(false);
@@ -87,10 +88,24 @@ const Users = () => {
             }
         )
     }
+    const getRoles = () => {
+        user && usersService.findRoles().then(
+            (res) => {
+                setRolesList(res.data)
+            },
+            error => {
+                console.log(error);
+            }
+        )
+    }
 
     useEffect(() => {
         getUsers();
     }, [dataState, search]);
+
+    useEffect(() => {
+        getRoles();
+    }, []);
 
     const addOrEditUser = () => {
         setLoading(true);
@@ -153,15 +168,24 @@ const Users = () => {
         setEditUser({ ...editUser, enabled: data.checked })
     }
 
+    const onChangeRole = (role: string) => {
+        if(editUser.roles.find((elem:any) => elem.label === role) != undefined){
+            setEditUser((prev: any) => ({...prev, roles: prev.roles.filter((elem:any) => elem.label != role)}))
+        } else {
+            const addRole = rolesList.find((elem:any) => elem.label === role)
+            setEditUser((prev: any) => ({...prev, roles: [...prev.roles, addRole]}))
+        }
+    }
+
     const addUserModal = (
-        <Modal open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} >
-            <UserForm userData={editUser} onChange={onEditUserChange} />
+        <Modal title='Add user' color='primary' open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} footerBtns >
+            <UserForm rolesList={rolesList} onChangeRole={onChangeRole} userData={editUser} onChange={onEditUserChange} />
         </Modal>
     );
 
     const deleteModal = (
         <Confirmation open={deleteUserModal} confirm={removeUserAccount}
-            cancel={closeDeleteModal} text={`Are you sure you want to delete ${deleteUser?.username} ?`} />
+            cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to delete the user ?`} />
     );
 
     const isAdmin = (roles: any) => {

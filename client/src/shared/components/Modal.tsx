@@ -63,7 +63,7 @@ const Modal = ({
                                 <FaTimes className='cursor-pointer' onClick={cancel} />
                             </div>
                             <hr />
-                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div className="bg-white max-h-96 overflow-y-auto px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 {children}
                             </div>
                             {
@@ -74,7 +74,7 @@ const Modal = ({
                                             className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-${color}-500 text-base font-medium text-white hover:bg-${color}-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${color}-400 sm:ml-3 sm:w-auto sm:text-sm`}
                                             onClick={confirm}
                                         >
-                                            Confirm
+                                            Save
                                         </button>
                                         <button
                                             type="button"

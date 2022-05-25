@@ -20,10 +20,12 @@ export class BaseService {
 
     async httpClient(apiUrl: string, method: Method, body?: any, headers?: any, responseType?: any) {
         let url = `${this.API_URL}${apiUrl}`
-        if(method == "GET" && Object.keys(body).length > 0){
+        if(method == "GET" && body && Object.keys(body).length > 0){
             url += "?"
             Object.keys(body).forEach((key) => {
-                url+= `${key}=${body[key]}`
+                if(body[key] && body[key] !== ""){
+                    url+= `${key}=${body[key]}&`
+                }
             });
         }
         const options = {

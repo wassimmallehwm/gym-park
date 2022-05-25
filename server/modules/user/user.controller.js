@@ -2,35 +2,43 @@ const User = require("./user.model");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const errorHandler = require("../../utils/errorHandler");
+const userCreation = require("../../mails/templates/userCreation");
+const { sendEmail } = require("../../mails/send");
 
 function generateToken(id) {
   return token = jwt.sign({
-      _id: id
+    _id: id
   }, process.env.JWT_SECRET,
-      { expiresIn: '1d' })
+    { expiresIn: '1d' })
+}
+
+async function hashPassword(password) {
+  const salt = await bcrypt.genSalt()
+  const hashedPassword = await bcrypt.hash(password, salt);
+  return hashedPassword;
 }
 
 function userResponse(data) {
   const {
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      roles,
-      createdAt,
-      imagePath
+    _id,
+    firstname,
+    lastname,
+    email,
+    phone,
+    roles,
+    createdAt,
+    imagePath
   } = data;
   const userResp = {
-      _id,
-      firstname,
-      lastname,
-      email,
-      phone,
-      role: roles[0]._id,
-      isAdmin: roles[0].label == "ADMIN" ? true : false,
-      createdAt,
-      imagePath
+    _id,
+    firstname,
+    lastname,
+    email,
+    phone,
+    role: roles[0]._id,
+    isAdmin: roles[0].label == "ADMIN" ? true : false,
+    createdAt,
+    imagePath
   }
   return userResp;
 }
@@ -42,7 +50,7 @@ module.exports.login = async (req, res) => {
       return res.status(400).json({ msg: "Fields missing !" })
 
 
-    const user = await User.findOne({email})
+    const user = await User.findOne({ email })
       .populate({ path: 'roles', model: 'Role', select: 'label' }).exec();
     if (!user)
       return res.status(404).json({ msg: "Account does not exist !" })
@@ -67,10 +75,34 @@ module.exports.login = async (req, res) => {
 
 module.exports.create = async (req, res) => {
   try {
+    const password = Math.random().toString(36).slice(-12);
+    let userData = req.body
+    userData.enabled = true;
+    let roles = [];
+    userData.roles.forEach(role => roles.push(role._id))
+    userData.roles = roles
+    console.log("PASSWORD : ", password)
+    userData.password = await hashPassword(password)
+    userData._id = undefined
+
+    //SEND PASSWORD BY MAIL
     const item = new User(req.body);
 
     const result = await item.save();
-    return res.status(200).json(result);
+    const {firstname, lastname, email} = result
+    var mailOptions = {
+      to: email,
+      subject: "Gym Park - Account created",
+      html: userCreation(firstname, lastname, email, password)
+    };
+    const mailCallback = async (error, info) => {
+      if (!error) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json({ error })
+      }
+    }
+    sendEmail(mailOptions, mailCallback);
   } catch (err) {
     console.error("User creation failed: " + err);
     const { status, message } = errorHandler(err)
@@ -95,7 +127,9 @@ module.exports.getAll = async (req, res) => {
 module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await User.findById(id);
+    const result = await User.findById(id)
+      .select('_id email firstname lastname birthdate sex phone createdAt')
+      .populate({ path: 'roles', model: 'Role', select: 'label' }).exec();
 
     return res.status(200).json(result);
   } catch (err) {

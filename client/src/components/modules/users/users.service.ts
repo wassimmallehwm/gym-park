@@ -190,14 +190,23 @@ export class UsersService extends BaseService {
     }
 
     findOne(id: string){
-        return this.http(id, 'POST');
+        return this.http(id, 'GET');
     }
     removeUser(id: string){
-        return this.http(`remove-user/${id}`, 'POST');
+        return this.http(id, 'DELETE');
     }
     
     addOrUpdateUser(mode: string, data: any){
-        return this.http(mode, 'POST', data);
+        const method = mode == "add" ? "POST" : "PUT"
+        const url = mode == "add" ? "" : data._id
+        return this.http(url, method, data);
+    }
+
+
+    //ROLES list
+
+    findRoles(){
+        return this.httpClient(`roles`, "GET")
     }
 }
 
