@@ -30,6 +30,19 @@ const CourseSchema = new mongoose.Schema({
         required: true,
         unique: false,
     },
+    poster: {
+        type: String,
+        required: true,
+        unique: false,
+        default: "course_default",
+    },
+    content: {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: false,
+        unique: false,
+        default: [],
+        ref: "Media",
+    },
     
 }, {
     timestamps: true

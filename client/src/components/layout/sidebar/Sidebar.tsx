@@ -15,6 +15,11 @@ const Sidebar = ({
           <span className="mx-4"> Users </span>
         </li>
       </Link>
+      <Link to="/courses">
+        <li className="p-3 cursor-pointer rounded-sm flex items-center justify-between hover:bg-gray-200">
+          <span className="mx-4"> Courses </span>
+        </li>
+      </Link>
     </div>
   )
 }

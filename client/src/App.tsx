@@ -11,7 +11,7 @@ import { GuestRoute, ProtectedRoute } from './shared/guards';
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
-//import "primeicons/primeicons.css";
+import "primeicons/primeicons.css";
 
 
 function App() {
