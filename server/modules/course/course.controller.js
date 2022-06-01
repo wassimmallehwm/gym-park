@@ -1,5 +1,16 @@
 const Course = require("./course.model");
 const errorHandler = require("../../utils/errorHandler");
+const exec = require('child_process').exec;
+
+const createCourseDir = (id) => {
+  exec(`mkdir ${__dirname}\\public\\courses\\${id}`, (error, stdout, stderr) => {
+    if (error) {
+      runBackup = false;
+      console.error(error)
+    }
+    console.log("course folder created.")
+  });
+}
 
 module.exports.create = async (req, res) => {
   try {
@@ -8,6 +19,7 @@ module.exports.create = async (req, res) => {
     const item = new Course(courseItem);
 
     const result = await item.save();
+    createCourseDir(result._id)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Course creation failed: " + err);
@@ -50,8 +62,9 @@ module.exports.getByIdFull = async (req, res) => {
     const { id } = req.params;
     const userFields = 'firstname lastname email imagePath'
     const result = await Course.findById(id)
-    .populate({ path: 'coachs', model: 'User', select: userFields })
-    .populate({ path: 'participants', model: 'User', select: userFields }).exec();
+      .populate({ path: 'coachs', model: 'User', select: userFields })
+      .populate({ path: 'participants', model: 'User', select: userFields })
+      .populate({ path: 'content', model: 'Media' }).exec();
 
     return res.status(200).json(result);
   } catch (err) {
@@ -105,7 +118,6 @@ module.exports.update = async (req, res) => {
 module.exports.remove = async (req, res) => {
   try {
     const { id } = req.params;
-
     const result = await Course.deleteOne({ _id: id });
     return res.status(200).json(result);
   } catch (err) {
@@ -114,4 +126,62 @@ module.exports.remove = async (req, res) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
+
+
+module.exports.createCourseMedia = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Course.updateOne(
+      { _id: id },
+      { $push: { content: req.media._id } });
+
+    const userFields = 'firstname lastname email imagePath'
+    const result = await Course.findById(id)
+      .populate({ path: 'coachs', model: 'User', select: userFields })
+      .populate({ path: 'participants', model: 'User', select: userFields })
+      .populate({ path: 'content', model: 'Media' }).exec();
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("Course creation failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
+
+module.exports.removeCourseMedia = async (req, res, next) => {
+  try {
+    const { courseId, mediaId } = req.params;
+
+    const oldItem = await Course.findOne({ _id: courseId })
+      .populate({ path: 'content', model: 'Media' }).exec();
+
+    await Course.updateOne(
+      { _id: courseId },
+      { $pull: { content: mediaId } });
+
+    const userFields = 'firstname lastname email imagePath'
+    const result = await Course.findById(courseId)
+      .populate({ path: 'coachs', model: 'User', select: userFields })
+      .populate({ path: 'participants', model: 'User', select: userFields })
+      .populate({ path: 'content', model: 'Media' }).exec();
+
+    const oldMedia = oldItem.content.find(elem => elem._id == mediaId)
+    let files = [oldMedia.path]
+    if (oldMedia.poster && oldMedia.poster != "") {
+      files.push(oldMedia.poster)
+    }
+
+    req.deleteFiles = files
+    req.result = result;
+    next()
+  } catch (err) {
+    console.error("Course media deletion failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
 

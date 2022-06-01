@@ -7,6 +7,7 @@ const globalMiddelwares = (app, dir) => {
   app.use('/public', express.static(path.join(dir, 'public')));
   app.use(cors());
   app.use(express.json());
+  app.use(express.urlencoded({extended: true}))
   app.use(morgan('dev'));
 
   app.use('/api/users', require('../modules/user'))

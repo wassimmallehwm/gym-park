@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 interface DatatableProps {
     list: any[]
     columns: any[]
+    paginated?: boolean
     sortField?: string | null
     sortOrder?: any
     onSort?: any
@@ -23,6 +24,7 @@ interface DatatableProps {
 const DataGrid = ({
     list,
     columns,
+    paginated,
     sortField,
     sortOrder,
     onSort,
@@ -92,20 +94,20 @@ const DataGrid = ({
                 lazy
                 removableSort
                 sortField={sortField? sortField : undefined}
-                sortOrder={sortOrder}
-                onSort={onSort}
-                loading={loading}
+                sortOrder={sortOrder || null}
+                onSort={onSort || null}
+                loading={loading || false}
                 // filters={{
                 //     'username': { constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]},
                 //     'roles': { constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]}
                 // }}
-                onFilter={onFilter}
+                onFilter={onFilter || null}
                 filterDisplay="menu"
-                paginator
+                paginator={paginated}
                 paginatorTemplate={paginatorTemplate}
-                first={first}
-                rows={limit}
-                onPage={onPage}
+                first={first || null}
+                rows={limit || null}
+                onPage={onPage || null}
                 totalRecords={totalRecords}
                 paginatorClassName="p-jc-end"
                 className="p-mt-6"

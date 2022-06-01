@@ -1,8 +1,8 @@
 const express = require('express');
-const { create, getAll, getById, getList, update, remove} = require('./media.controller');
+const { createMedia, getAll, getById, getList, updateMedia, removeMedia} = require('./media.controller');
 const router = express.Router();
 
-router.post('/', create);
+router.post('/', createMedia);
 
 router.get('/', getAll);
 
@@ -10,8 +10,8 @@ router.get('/list', getList);
 
 router.get('/:id', getById);
 
-router.put('/:id', update);
+router.put('/:id', updateMedia);
 
-router.delete('/:id', remove);
+router.delete('/:id', removeMedia);
 
 module.exports = router;

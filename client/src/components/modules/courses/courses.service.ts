@@ -9,8 +9,8 @@ export class CoursesService extends BaseService {
         super();
     }
 
-    private http(apiUrl: string, method: Method, body?: any, headers?: any) {
-        return this.httpClient(`${this.SRC_URL}${apiUrl}`, method, body, headers)
+    private http(apiUrl: string, method: Method, body?: any, headers?: any, responseType?: any, uploadReq?: boolean, uploadCallback?: any) {
+        return this.httpClient(`${this.SRC_URL}${apiUrl}`, method, body, headers, responseType, uploadReq, uploadCallback)
     }
 
     findAll(query: any){
@@ -37,6 +37,18 @@ export class CoursesService extends BaseService {
         const method = mode == "add" ? "POST" : "PUT"
         const url = mode == "add" ? "" : data._id
         return this.http(url, method, data);
+    }
+
+    addCourseMedia(id: string, data: FormData, uploadCallback: any){
+        return this.http(`media/${id}`, 'POST', data, {}, null, true, uploadCallback);
+    }
+
+    editCourseMedia(courseId: string, mediaId: string, data: FormData, uploadCallback: any){
+        return this.http(`media/${courseId}/${mediaId}`, 'PUT', data, {}, null, true, uploadCallback);
+    }
+
+    removeCourseMedia(courseId: string, mediaId: string){
+        return this.http(`media/${courseId}/${mediaId}`, 'DELETE');
     }
 }
 

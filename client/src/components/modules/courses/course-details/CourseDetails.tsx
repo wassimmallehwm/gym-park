@@ -27,11 +27,11 @@ const CourseDetails = () => {
 
     const pageContent = () => {
         if(activeIndex == 2){
-            return <CourseCoachs/>
+            return <CourseCoachs setCourse={(item: any) => setCourse(item)} course={course}/>
         } else if(activeIndex == 1){
-            return <CourseParticipants/>
+            return <CourseParticipants setCourse={(item: any) => setCourse(item)} course={course}/>
         } else {
-            return <CourseContent/>
+            return <CourseContent setCourse={(item: any) => setCourse(item)} course={course}/>
         }
     }
 
@@ -39,24 +39,24 @@ const CourseDetails = () => {
         getOneCourse()
     }, [])
     return (
-        <div>
+        <div className='pt-4'>
             <div className='flex items-center justify-evenly border-b-2 border-primary-200 text-slate-600'>
             
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-slate-100 ${activeIndex == 0 ? 'bg-slate-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 0 ? 'bg-primary-100' : ''}`} 
                 onClick={() => setActiveIndex(0)}> 
                 Content
             </div>
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-slate-100 ${activeIndex == 1 ? 'bg-slate-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 1 ? 'bg-primary-100' : ''}`} 
                 onClick={() => setActiveIndex(1)}> 
                 Participants
             </div>
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-slate-100 ${activeIndex == 2 ? 'bg-slate-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 2 ? 'bg-primary-100' : ''}`} 
                 onClick={() => setActiveIndex(2)}> 
                 Coachs
             </div>
         </div>
-        <div>
-            {pageContent()}
+        <div className='py-8'>
+            {course && pageContent()}
         </div>
         </div>
     )

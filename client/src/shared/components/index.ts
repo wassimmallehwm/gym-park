@@ -7,6 +7,7 @@ import Grid from "./Grid";
 import Loader from "./Loader";
 import Modal from "./Modal";
 import PageTitle from "./PageTitle";
+import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
 
 export {
@@ -19,5 +20,6 @@ export {
   Modal,
   Spinner,
   DataGrid,
-  PageTitle
+  PageTitle,
+  ProgressBar
 };

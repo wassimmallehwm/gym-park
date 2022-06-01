@@ -68,6 +68,7 @@ const UserForm = ({
                 </label>
                 <select name="sex" value={sex} onChange={onChange}
                     className="w-full p-2 border border-gray-300 rounded mt-1">
+                    <option disabled selected>Select the user sex</option>
                     <option value='MALE'>Male</option>
                     <option value='FEMALE'>Female</option>
                 </select>

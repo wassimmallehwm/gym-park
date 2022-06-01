@@ -10,7 +10,6 @@ const globalMiddelwares = require('./middleware');
 globalMiddelwares(app, __dirname);
 dbConnect();
 
-
 app.listen(PORT, () => {
   console.info('Listening on port ' + PORT);
 });

@@ -18,6 +18,18 @@ const CourseSchema = new mongoose.Schema({
         required: false,
         unique: false,
     },
+    level: {
+        type: String,
+        required: true,
+        unique: false,
+        enum: ['BEGINER', 'INTERMEDIATE', 'ADVANCED']
+    },
+    private: {
+        type: String,
+        required: true,
+        unique: false,
+        default: false
+    },
     participants: {
         type: [mongoose.Schema.Types.ObjectId],
         required: false,

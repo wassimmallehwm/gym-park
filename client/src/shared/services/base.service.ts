@@ -18,7 +18,15 @@ export class BaseService {
     }
 
 
-    async httpClient(apiUrl: string, method: Method, body?: any, headers?: any, responseType?: any) {
+    async httpClient(
+        apiUrl: string,
+        method: Method,
+        body?: any,
+        headers?: any,
+        responseType?: any,
+        uploadReq?: boolean,
+        uploadCallback?: any
+        ) {
         let url = `${this.API_URL}${apiUrl}`
         if(method == "GET" && body && Object.keys(body).length > 0){
             url += "?"
@@ -37,6 +45,7 @@ export class BaseService {
                 "Content-Type": "application/json;charset=UTF-8",
                 ...headers
             },
+            onUploadProgress: uploadReq ? uploadCallback : null
         };
 
         return Axios.request<typeof responseType>(options);

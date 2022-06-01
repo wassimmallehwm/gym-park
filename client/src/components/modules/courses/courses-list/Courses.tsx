@@ -3,7 +3,7 @@ import { Loader, Confirmation, Button, Modal, PageTitle, DataGrid } from '../../
 import moment from 'moment';
 // import NoData from '../NoData';
 import { AuthContext } from '../../../../contexts/auth/AuthContext';
-import { FaEdit, FaPlus, FaTrash, FaVideo } from 'react-icons/fa';
+import { FaEdit, FaList, FaPlus, FaTrash, FaVideo } from 'react-icons/fa';
 import CourseForm from '../course-form/CourseForm';
 import { CoursesService } from '../courses.service';
 import { AxiosResponse } from 'axios';
@@ -19,6 +19,7 @@ const Courses = () => {
     const initCourse = {
         label: "",
         description: "",
+        level: "",
         poster: "",
         date: "",
         _id: ""
@@ -183,7 +184,7 @@ const Courses = () => {
                 <FaEdit size="14px" />
             </Button>
             <Button title="Content" rounded onClick={() => navigate(`/courses/${data._id}`)} color="primary">
-                <FaVideo size="14px" />
+                <FaList size="14px" />
             </Button>
             <Button title="Delete" rounded onClick={() => openDeleteModal(data)} color="secondary">
                 <FaTrash size="14px" />

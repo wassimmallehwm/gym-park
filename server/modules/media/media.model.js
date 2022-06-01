@@ -21,6 +21,7 @@ const MediaSchema = new mongoose.Schema({
         type: String,
         required: false,
         unique: false,
+        default: 'poster_default'
     },
     type: {
         type: String,

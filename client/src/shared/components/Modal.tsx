@@ -10,6 +10,8 @@ interface ModalProps {
     color?: string
     footerBtns?: boolean
     children?: any
+    showOverlay?: boolean
+    overlay?: any
 }
 
 const Modal = ({
@@ -19,7 +21,9 @@ const Modal = ({
     title,
     color = 'primary', //indigo
     footerBtns,
-    children
+    children,
+    showOverlay,
+    overlay
 }: ModalProps) => {
     const cancelButtonRef = useRef(null)
     return (
@@ -63,8 +67,15 @@ const Modal = ({
                                 <FaTimes className='cursor-pointer' onClick={cancel} />
                             </div>
                             <hr />
-                            <div className="bg-white max-h-96 overflow-y-auto px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                {children}
+                            <div className='p-0 relative'>
+                                {showOverlay && (
+                                    <div  className='absolute top-0 left-0 w-full h-full z-20 flex items-center justify-center bg-black opacity-50'>
+                                        {overlay}
+                                    </div>
+                                ) }
+                                <div className="bg-white max-h-96 overflow-y-auto px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    {children}
+                                </div>
                             </div>
                             {
                                 footerBtns ? (
