@@ -12,6 +12,16 @@ const createCourseDir = (id) => {
   });
 }
 
+
+const getFullCourseData = async (courseId) => {
+  const userFields = 'firstname lastname email imagePath'
+  const result = await Course.findById(courseId)
+    .populate({ path: 'coachs', model: 'User', select: userFields })
+    .populate({ path: 'participants', model: 'User', select: userFields })
+    .populate({ path: 'content', model: 'Media' }).exec();
+  return result
+}
+
 module.exports.create = async (req, res) => {
   try {
     let courseItem = req.body;
@@ -60,11 +70,7 @@ module.exports.getById = async (req, res) => {
 module.exports.getByIdFull = async (req, res) => {
   try {
     const { id } = req.params;
-    const userFields = 'firstname lastname email imagePath'
-    const result = await Course.findById(id)
-      .populate({ path: 'coachs', model: 'User', select: userFields })
-      .populate({ path: 'participants', model: 'User', select: userFields })
-      .populate({ path: 'content', model: 'Media' }).exec();
+    const result = await getFullCourseData(id)
 
     return res.status(200).json(result);
   } catch (err) {
@@ -136,12 +142,7 @@ module.exports.createCourseMedia = async (req, res) => {
       { _id: id },
       { $push: { content: req.media._id } });
 
-    const userFields = 'firstname lastname email imagePath'
-    const result = await Course.findById(id)
-      .populate({ path: 'coachs', model: 'User', select: userFields })
-      .populate({ path: 'participants', model: 'User', select: userFields })
-      .populate({ path: 'content', model: 'Media' }).exec();
-
+    const result = await getFullCourseData(id)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Course creation failed: " + err);
@@ -162,11 +163,7 @@ module.exports.removeCourseMedia = async (req, res, next) => {
       { _id: courseId },
       { $pull: { content: mediaId } });
 
-    const userFields = 'firstname lastname email imagePath'
-    const result = await Course.findById(courseId)
-      .populate({ path: 'coachs', model: 'User', select: userFields })
-      .populate({ path: 'participants', model: 'User', select: userFields })
-      .populate({ path: 'content', model: 'Media' }).exec();
+    const result = await getFullCourseData(courseId)
 
     const oldMedia = oldItem.content.find(elem => elem._id == mediaId)
     let files = [oldMedia.path]
@@ -183,5 +180,24 @@ module.exports.removeCourseMedia = async (req, res, next) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
+
+
+module.exports.removeCourseParticipant = async (req, res, next) => {
+  try {
+    const { courseId, participantId } = req.params;
+    
+    await Course.updateOne(
+      { _id: courseId },
+      { $pull: { participants: participantId } });
+
+    const result = await getFullCourseData(courseId)
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("Course participant removal failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
 
 

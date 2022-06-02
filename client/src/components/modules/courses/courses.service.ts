@@ -39,6 +39,9 @@ export class CoursesService extends BaseService {
         return this.http(url, method, data);
     }
 
+
+    // COURSE MEDIA ENDPOINTS
+
     addCourseMedia(id: string, data: FormData, uploadCallback: any){
         return this.http(`media/${id}`, 'POST', data, {}, null, true, uploadCallback);
     }
@@ -50,5 +53,13 @@ export class CoursesService extends BaseService {
     removeCourseMedia(courseId: string, mediaId: string){
         return this.http(`media/${courseId}/${mediaId}`, 'DELETE');
     }
+
+    // END COURSE MEDIA ENDPOINTS
+
+    removeCourseParticipant(courseId: string, participantId: string){
+        return this.http(`participant/${courseId}/${participantId}`, 'PUT');
+    }
+
+
 }
 

@@ -39,7 +39,7 @@ export class BaseService {
         const options = {
             url,
             method: method,
-            data: body,
+            data: body || null,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",

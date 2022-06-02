@@ -12,6 +12,7 @@ import { GuestRoute, ProtectedRoute } from './shared/guards';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <AppContext>
         <Layout>
+          <Toaster/>
           <Routes>
             {appRoutes.map((route, i) => {
               if (route.status == 'PROTECTED') {
