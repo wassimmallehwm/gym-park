@@ -89,7 +89,7 @@ module.exports.create = async (req, res) => {
     const item = new User(req.body);
 
     const result = await item.save();
-    const {firstname, lastname, email} = result
+    const { firstname, lastname, email } = result
     var mailOptions = {
       to: email,
       subject: "Gym Park - Account created",
@@ -195,4 +195,27 @@ module.exports.remove = async (req, res) => {
     res.status(status).json({ message, entity: 'User' })
   }
 };
+
+module.exports.search = async (req, res) => {
+  try {
+    const { role, q } = req.query
+    const filter = {
+      '_id': { $ne: req.user },
+      $or: [
+        { firstname: { $regex: q, $options: 'i' } },
+        { lastname: { $regex: q, $options: 'i' } }
+      ]
+    }
+    let users = await User.find(filter)
+      .populate({ path: 'roles', model: 'Role', select: 'label' })
+      .select('firstname lastname imagePath')
+      .limit(5)
+      .exec();
+    users = users.filter(user => user.roles.find(item => item.label == role))
+    res.status(200).json(users);
+  } catch (e) {
+    console.log('ERROR', e);
+    res.status(500).json({ 'error': e })
+  }
+}
 

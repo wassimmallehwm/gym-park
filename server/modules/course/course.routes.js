@@ -11,7 +11,10 @@ const {
     remove,
     createCourseMedia,
     removeCourseMedia,
-    removeCourseParticipant
+    removeCourseParticipant,
+    removeCourseCoach,
+    addCourseCoach,
+    addCourseParticipant
 } = require('./course.controller');
 const router = express.Router();
 
@@ -59,7 +62,13 @@ router.delete(
     removeMedia
 );
 
+router.post('/participant', addCourseParticipant);
+
 router.put('/participant/:courseId/:participantId', removeCourseParticipant);
+
+router.post('/coach', addCourseCoach);
+
+router.put('/coach/:courseId/:coachId', removeCourseCoach);
 
 
 

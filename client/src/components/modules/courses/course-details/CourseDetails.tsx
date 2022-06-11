@@ -40,22 +40,22 @@ const CourseDetails = () => {
     }, [])
     return (
         <div className='pt-4'>
-            <div className='flex items-center justify-evenly border-b-2 border-primary-200 text-slate-600'>
+            <div className='flex items-center justify-evenly border-b-2 border-blue-200 text-slate-600'>
             
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 0 ? 'bg-primary-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-blue-100 ${activeIndex == 0 ? 'bg-blue-100' : ''}`} 
                 onClick={() => setActiveIndex(0)}> 
                 Content
             </div>
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 1 ? 'bg-primary-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-blue-100 ${activeIndex == 1 ? 'bg-blue-100' : ''}`} 
                 onClick={() => setActiveIndex(1)}> 
                 Participants
             </div>
-            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-primary-100 ${activeIndex == 2 ? 'bg-primary-100' : ''}`} 
+            <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-blue-100 ${activeIndex == 2 ? 'bg-blue-100' : ''}`} 
                 onClick={() => setActiveIndex(2)}> 
                 Coachs
             </div>
         </div>
-        <div className='py-8'>
+        <div className='py-8 h-[70vh]'>
             {course && pageContent()}
         </div>
         </div>

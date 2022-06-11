@@ -19,7 +19,7 @@ const Modal = ({
     confirm,
     cancel,
     title,
-    color = 'primary', //indigo
+    color = 'blue', //indigo
     footerBtns,
     children,
     showOverlay,

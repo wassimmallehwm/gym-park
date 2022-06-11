@@ -82,7 +82,7 @@ const UserForm = ({
                         rolesList && rolesList.map((roleItem: any) => (
                             <>
                             <label className='flex items-center cursor-pointer'>
-                                <input onChange={() => onChangeRole(roleItem.label)} className='w-6 h-6 mx-2 cursor-pointer accent-primary-400' type='checkbox' checked={roles.find((elem: any) => elem._id == roleItem._id)} />
+                                <input onChange={() => onChangeRole(roleItem.label)} className='w-6 h-6 mx-2 cursor-pointer accent-blue-600' type='checkbox' checked={roles.find((elem: any) => elem._id == roleItem._id)} />
                                 {roleItem.label}
                             </label>
                             </>

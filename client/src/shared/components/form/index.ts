@@ -1,5 +1,5 @@
 import Input from "./Input";
-import Multiselect from "./Multiselect";
+import AutoComplete from "./AutoComplete";
 import Select from "./Select";
 
-export { Input, Select, Multiselect }
+export { Input, Select, AutoComplete }

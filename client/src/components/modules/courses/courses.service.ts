@@ -55,11 +55,38 @@ export class CoursesService extends BaseService {
     }
 
     // END COURSE MEDIA ENDPOINTS
+    
+
+    // COURSE PARTICIPANT ENDPOINTS
+
+    addCourseParticipant(courseId: string, participantId: string){
+        return this.http(`participant`, 'POST', {
+            courseId,
+            participantId
+        });
+    }
 
     removeCourseParticipant(courseId: string, participantId: string){
         return this.http(`participant/${courseId}/${participantId}`, 'PUT');
     }
 
+    // END COURSE PARTICIPANT ENDPOINTS
+
+
+    // COURSE COACHS ENDPOINTS
+
+    addCourseCoach(courseId: string, coachId: string){
+        return this.http(`coach`, 'POST', {
+            courseId,
+            coachId
+        });
+    }
+
+    removeCourseCoach(courseId: string, coachId: string){
+        return this.http(`coach/${courseId}/${coachId}`, 'PUT');
+    }
+
+    // END COURSE COACHS ENDPOINTS 
 
 }
 

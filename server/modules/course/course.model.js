@@ -24,10 +24,8 @@ const CourseSchema = new mongoose.Schema({
         unique: false,
         enum: ['BEGINER', 'INTERMEDIATE', 'ADVANCED']
     },
-    private: {
-        type: String,
-        required: true,
-        unique: false,
+    isPrivate: {
+        type: Boolean,
         default: false
     },
     participants: {

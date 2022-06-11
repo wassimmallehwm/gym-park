@@ -56,7 +56,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Course.findById(id)
-      .select('label description date poster')
+      .select('label description date poster isPrivate')
       .lean().exec();
 
     return res.status(200).json(result);
@@ -182,6 +182,24 @@ module.exports.removeCourseMedia = async (req, res, next) => {
 };
 
 
+
+module.exports.addCourseParticipant = async (req, res, next) => {
+  try {
+    const { courseId, participantId } = req.body;
+    
+    await Course.updateOne(
+      { _id: courseId },
+      { $push: { participants: participantId } });
+
+    const result = await getFullCourseData(courseId)
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("Course participant adding failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
 module.exports.removeCourseParticipant = async (req, res, next) => {
   try {
     const { courseId, participantId } = req.params;
@@ -198,6 +216,43 @@ module.exports.removeCourseParticipant = async (req, res, next) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
+
+
+
+module.exports.addCourseCoach = async (req, res, next) => {
+  try {
+    const { courseId, coachId } = req.body;
+    
+    await Course.updateOne(
+      { _id: courseId },
+      { $push: { coachs: coachId } });
+
+    const result = await getFullCourseData(courseId)
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("Course coach adding failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
+module.exports.removeCourseCoach = async (req, res, next) => {
+  try {
+    const { courseId, coachId } = req.params;
+    
+    await Course.updateOne(
+      { _id: courseId },
+      { $pull: { coachs: coachId } });
+
+    const result = await getFullCourseData(courseId)
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("Course coach removal failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'Course' })
+  }
+};
+
 
 
 

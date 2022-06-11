@@ -6,20 +6,23 @@ import { courseImage } from '../../../../utils/filePath';
 interface CourseFormProps {
     courseData: any,
     onChange: any,
-    onChangeFile: any
+    onChangeFile: any,
+    onChangeIsPrivate: any
 }
 
 const CourseForm = ({
     courseData,
     onChange,
-    onChangeFile
+    onChangeFile,
+    onChangeIsPrivate
 }: CourseFormProps) => {
     const {
         label,
         description,
         level,
         date,
-        poster
+        poster,
+        isPrivate
     } = courseData;
     const [posterPreview, setPosterPreview] = useState<any>()
 
@@ -66,6 +69,10 @@ const CourseForm = ({
                     className="w-full p-2 border border-gray-300 rounded mt-1">
                 </textarea>
             </div>
+            <label className='flex items-center cursor-pointer'>
+                <input onChange={onChangeIsPrivate} className='w-6 h-6 mx-2 cursor-pointer accent-blue-600' type='checkbox' checked={isPrivate} />
+                Private
+            </label>
             <div>
                 <label className="text-sm font-bold text-gray-600 block">
                     Level
@@ -89,7 +96,7 @@ const CourseForm = ({
                 <label className="text-sm font-bold text-gray-600 block mb-2">
                     Course poster
                 </label>
-                <Button onClick={() => posterRef.current.click()} color='primary' outline>Pick Image</Button>
+                <Button onClick={() => posterRef.current.click()} color='blue' outline>Pick Image</Button>
                 {
                     displayPreview() && <img className='m-auto my-2 max-h-40 shadow-lg' src={displayPreview()} />
                 }

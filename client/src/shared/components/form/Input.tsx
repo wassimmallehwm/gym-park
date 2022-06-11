@@ -9,8 +9,8 @@ const Input = ({ ...props }: InputProps) => {
     if(props.disabled){
         editableClass = " bg-transparent border-none p-0"
     }
-    return <input className={`w-full rounded mt-1 outline-hidden focus:border-primary-300 focus:outline-none focus:ring-1 ${editableClass}`} 
-        disabled={!props.disabled} {...props} />;
+    return <input className={`w-full rounded mt-1 outline-hidden focus:border-blue-300 focus:outline-none focus:ring-1 ${editableClass}`} 
+        disabled={props.disabled} {...props} />;
 };
 
 export default Input;

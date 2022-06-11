@@ -178,14 +178,14 @@ const Users = () => {
     }
 
     const addUserModal = (
-        <Modal title='Add user' color='primary' open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} footerBtns >
+        <Modal title='Add user' color='blue' open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} footerBtns >
             <UserForm rolesList={rolesList} onChangeRole={onChangeRole} userData={editUser} onChange={onEditUserChange} />
         </Modal>
     );
 
     const deleteModal = (
         <Confirmation open={deleteUserModal} confirm={removeUserAccount}
-            cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to delete the user ?`} />
+            cancel={closeDeleteModal} color="red" text={`Are you sure you want to delete the user ?`} />
     );
 
     const isAdmin = (roles: any) => {
@@ -213,10 +213,10 @@ const Users = () => {
             :
             (
                 <>
-                    <Button rounded onClick={() => openEditModal(data)} color="primary">
+                    <Button rounded onClick={() => openEditModal(data)} color="blue">
                         <FaEdit size="14px" />
                     </Button>
-                    <Button rounded onClick={() => openDeleteModal(data)} color="secondary">
+                    <Button rounded onClick={() => openDeleteModal(data)} color="red">
                         <FaTrash size="14px" />
                     </Button>
                 </>
@@ -264,12 +264,12 @@ const Users = () => {
         <div className="main-div">
             {addUserModal}
             {deleteModal}
-            <PageTitle color='primary'>Users</PageTitle>
+            <PageTitle color='blue'>Users</PageTitle>
             <div className="flex justify-between items-center my-2">
                 <input type="text" autoComplete='off' name="code" placeholder='Search'
                     onChange={(e: any) => setSearch(e.target.value)} value={search}
                     className="w-1/2 h-full p-2 border border-gray-300 rounded mt-1" />
-                <Button rounded title="Ajouter" onClick={openAddModal} outline color="secondary">
+                <Button rounded title="Ajouter" onClick={openAddModal} outline color="red">
                     <FaPlus size="14px" />
                 </Button>
             </div>

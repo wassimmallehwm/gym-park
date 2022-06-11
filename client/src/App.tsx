@@ -12,6 +12,7 @@ import { GuestRoute, ProtectedRoute } from './shared/guards';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Toaster } from 'react-hot-toast';
 
 

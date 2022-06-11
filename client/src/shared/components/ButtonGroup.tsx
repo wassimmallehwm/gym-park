@@ -13,12 +13,12 @@ const btns = [
     {
         label: 'save',
         Icon: FaSave,
-        color: 'primary'
+        color: 'blue'
     },
     {
         label: 'cancel',
         Icon: FaUndo,
-        color: 'secondary'
+        color: 'red'
     }
 ]
 

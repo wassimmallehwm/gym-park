@@ -22,6 +22,7 @@ const Courses = () => {
         level: "",
         poster: "",
         date: "",
+        isPrivate: false,
         _id: ""
     }
 
@@ -154,15 +155,19 @@ const Courses = () => {
         setPosterFile(file)
     }
 
+    const onChangeIsPrivate = () => {
+        setEditCourse((prev: any) => ({...prev, isPrivate: !prev.isPrivate}))
+    } 
+
     const addCourseModal = (
-        <Modal title='Add Course' color='primary' open={editCourseModal} confirm={addOrEditCourse} cancel={closeAddModal} footerBtns >
-            <CourseForm onChangeFile={onChangeFile} courseData={editCourse} onChange={onEditCourseChange} />
+        <Modal title='Add Course' color='blue' open={editCourseModal} confirm={addOrEditCourse} cancel={closeAddModal} footerBtns >
+            <CourseForm onChangeFile={onChangeFile} courseData={editCourse} onChange={onEditCourseChange} onChangeIsPrivate={onChangeIsPrivate} />
         </Modal>
     );
 
     const deleteModal = (
         <Confirmation open={deleteCourseModal} confirm={removeCourseAccount}
-            cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to delete the Course ?`} />
+            cancel={closeDeleteModal} color="red" text={`Are you sure you want to delete the Course ?`} />
     );
 
     const dateRender = (data: any) => {
@@ -180,13 +185,13 @@ const Courses = () => {
 
     const actionRender = (data: any) => (
         <>
-            <Button title="Edit" rounded onClick={() => openEditModal(data)} color="primary">
+            <Button title="Edit" rounded onClick={() => openEditModal(data)} color="blue">
                 <FaEdit size="14px" />
             </Button>
-            <Button title="Content" rounded onClick={() => navigate(`/courses/${data._id}`)} color="primary">
+            <Button title="Content" rounded onClick={() => navigate(`/courses/${data._id}`)} color="blue">
                 <FaList size="14px" />
             </Button>
-            <Button title="Delete" rounded onClick={() => openDeleteModal(data)} color="secondary">
+            <Button title="Delete" rounded onClick={() => openDeleteModal(data)} color="red">
                 <FaTrash size="14px" />
             </Button>
         </>
@@ -234,12 +239,12 @@ const Courses = () => {
         <div className="main-div">
             {addCourseModal}
             {deleteModal}
-            <PageTitle color='primary'>Courses</PageTitle>
+            <PageTitle color='blue'>Courses</PageTitle>
             <div className="flex justify-between items-center my-2">
                 <input type="text" autoComplete='off' name="code" placeholder='Search'
                     onChange={(e: any) => setSearch(e.target.value)} value={search}
                     className="w-1/2 h-full p-2 border border-gray-300 rounded mt-1" />
-                <Button rounded title="Add" onClick={openAddModal} outline color="secondary">
+                <Button rounded title="Add" onClick={openAddModal} outline color="red">
                     <FaPlus size="14px" />
                 </Button>
             </div>

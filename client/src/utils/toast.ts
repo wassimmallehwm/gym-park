@@ -14,6 +14,7 @@ const toastOptions:
 }
 
 export const showToast = (type: string, text: string) => {
+    toast.dismiss()
     switch (type) {
         case 'success':
             toast.success(text, toastOptions);

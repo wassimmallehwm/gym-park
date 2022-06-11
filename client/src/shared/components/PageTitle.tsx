@@ -6,11 +6,11 @@ interface PageTitleProps {
 }
 
 const PageTitle = ({
-    color = 'primary',
+    color = 'blue',
     children
 }: PageTitleProps) => {
     return (
-        <div className={`bg-${color}-400 rounded-md w-11/12 h-10 mx-auto my-4 flex justify-center items-center`}>
+        <div className={`bg-${color}-600 rounded-md w-11/12 h-10 mx-auto my-4 flex justify-center items-center`}>
             <h4 className="text-slate-100">
                 {children}
             </h4>

@@ -192,6 +192,7 @@ export class UsersService extends BaseService {
     findOne(id: string){
         return this.http(id, 'GET');
     }
+
     removeUser(id: string){
         return this.http(id, 'DELETE');
     }
@@ -200,6 +201,11 @@ export class UsersService extends BaseService {
         const method = mode == "add" ? "POST" : "PUT"
         const url = mode == "add" ? "" : data._id
         return this.http(url, method, data);
+    }
+
+    search(role: string, q: string){
+        const url = `search?role=${role.toUpperCase()}&q=${q}`
+        return this.http(url, 'GET');
     }
 
 
