@@ -3,9 +3,15 @@ const Forum = require("./forum.model");
       
 module.exports.create = async(req, res) => {
   try {
-    const item = new Forum(req.body);
+    let forum = req.body
+    forum.user = req.user
+    forum.mediaPath = req.file.filename
+    const item = new Forum(forum);
 
-    const result = await item.save();
+    let result = await item.save();
+    result = await Forum.findById(result._id)
+    .populate({ path: 'user', model: 'User', select: 'firstname lastname imagePath' })
+    .exec();
     return res.status(200).json(result);
   } catch (err) {
     console.error("Forum creation failed: " + err);
@@ -44,12 +50,12 @@ module.exports.getById = async(req, res) => {
       
 module.exports.getList = async(req, res) => {
     try {
-      const { page = 1, limit = 20, sortField, sortOrder } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder } = req.query;
       const options = {
         page: parseInt(page, 10),
         limit: parseInt(limit, 10),
-        sort: {}
-
+        sort: {"_id": -1},
+        populate: { path: 'user', model: 'User', select: 'firstname lastname imagePath' }
       };
 
       if (sortField && sortOrder) {

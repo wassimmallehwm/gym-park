@@ -30,9 +30,13 @@ export class BaseService {
         let url = `${this.API_URL}${apiUrl}`
         if(method == "GET" && body && Object.keys(body).length > 0){
             url += "?"
-            Object.keys(body).forEach((key) => {
+            Object.keys(body).forEach((key, i) => {
                 if(body[key] && body[key] !== ""){
-                    url+= `${key}=${body[key]}&`
+                    if(i === 0){
+                        url+= `${key}=${body[key]}`
+                    } else {
+                        url+= `&${key}=${body[key]}`
+                    }
                 }
             });
         }

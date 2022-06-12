@@ -1,8 +1,10 @@
 const express = require('express');
+const { auth } = require('../../middleware');
+const { fileUpload } = require('../../utils/fileUpload');
 const { create, getAll, getById, getList, update, remove} = require('./forum.controller');
 const router = express.Router();
 
-router.post('/', create);
+router.post('/', auth, fileUpload('forum').single('media'), create);
 
 router.get('/', getAll);
 

@@ -6,6 +6,10 @@ export const userImage = (path: string) => {
     return path ? `${Config.getConfig().publicUrl}users/${path}` : placeholder
 }
 
+export const forumImage = (path: string) => {
+    return path ? `${Config.getConfig().publicUrl}forum/${path}` : placeholder
+}
+
 export const courseImage = (path: string) => {
     return path ? `${Config.getConfig().publicUrl}courses/${path}` : placeholder
 }

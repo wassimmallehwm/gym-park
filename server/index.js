@@ -5,7 +5,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3030;
 
 const dbConnect = require('./database');
-const globalMiddelwares = require('./middleware');
+const {globalMiddelwares} = require('./middleware');
 
 globalMiddelwares(app, __dirname);
 dbConnect();
