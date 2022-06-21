@@ -6,7 +6,6 @@ import { AuthContext } from '../../../../contexts/auth/AuthContext';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import UserForm from '../user-form/UserForm';
 import { UsersService } from '../users.service';
-import { AxiosResponse } from 'axios';
 
 const Users = () => {
     const { user } = useContext(AuthContext)
@@ -34,7 +33,6 @@ const Users = () => {
     const [password, setPassword] = useState<any>('');
     const [passwordCheck, setPasswordCheck] = useState<any>('');
     const [mode, setMode] = useState<any>('add');
-    const didMount = useRef(false);
     const [dataLoading, setDataLoading] = useState<boolean>(false);
     const [totalRecords, setTotalRecords] = useState(0);
     const [dataState, setDataState] = useState({
@@ -61,7 +59,6 @@ const Users = () => {
             }
         )
     }
-
 
     const getOneUser = (id: string) => {
         user && usersService.findOne(id).then(
@@ -164,10 +161,6 @@ const Users = () => {
         setEditUser({ ...editUser, [e.target.name]: e.target.value })
     }
 
-    const onChangeEnabled = (e: any, data: any) => {
-        setEditUser({ ...editUser, enabled: data.checked })
-    }
-
     const onChangeRole = (role: string) => {
         if(editUser.roles.find((elem:any) => elem.label === role) != undefined){
             setEditUser((prev: any) => ({...prev, roles: prev.roles.filter((elem:any) => elem.label != role)}))
@@ -178,14 +171,14 @@ const Users = () => {
     }
 
     const addUserModal = (
-        <Modal title='Add user' color='blue' open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} footerBtns >
+        <Modal title='Add user' color="primary" open={editUserModal} confirm={addOrEditUser} cancel={closeAddModal} footerBtns >
             <UserForm rolesList={rolesList} onChangeRole={onChangeRole} userData={editUser} onChange={onEditUserChange} />
         </Modal>
     );
 
     const deleteModal = (
         <Confirmation open={deleteUserModal} confirm={removeUserAccount}
-            cancel={closeDeleteModal} color="red" text={`Are you sure you want to delete the user ?`} />
+            cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to delete the user ?`} />
     );
 
     const isAdmin = (roles: any) => {
@@ -213,10 +206,10 @@ const Users = () => {
             :
             (
                 <>
-                    <Button rounded onClick={() => openEditModal(data)} color="blue">
+                    <Button rounded onClick={() => openEditModal(data)} color="primary">
                         <FaEdit size="14px" />
                     </Button>
-                    <Button rounded onClick={() => openDeleteModal(data)} color="red">
+                    <Button rounded onClick={() => openDeleteModal(data)} color="secondary">
                         <FaTrash size="14px" />
                     </Button>
                 </>
@@ -264,12 +257,12 @@ const Users = () => {
         <div className="main-div">
             {addUserModal}
             {deleteModal}
-            <PageTitle color='blue'>Users</PageTitle>
+            <PageTitle color="primary">Users</PageTitle>
             <div className="flex justify-between items-center my-2">
                 <input type="text" autoComplete='off' name="code" placeholder='Search'
                     onChange={(e: any) => setSearch(e.target.value)} value={search}
                     className="w-1/2 h-full p-2 border border-gray-300 rounded mt-1" />
-                <Button rounded title="Ajouter" onClick={openAddModal} outline color="red">
+                <Button rounded title="Ajouter" onClick={openAddModal} outline color="secondary">
                     <FaPlus size="14px" />
                 </Button>
             </div>

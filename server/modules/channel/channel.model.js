@@ -18,12 +18,12 @@ const ChannelSchema = new mongoose.Schema({
         unique: false,
         default: false,
     },
-    content: {
+    members: {
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         unique: false,
         default: [],
-        ref: "Media",
+        ref: "User",
     },
     
 }, {

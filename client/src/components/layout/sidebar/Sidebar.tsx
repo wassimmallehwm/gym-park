@@ -20,6 +20,11 @@ const Sidebar = ({
           <span className="mx-4"> Courses </span>
         </li>
       </Link>
+      <Link to="/channels">
+        <li className="p-3 cursor-pointer rounded-sm flex items-center justify-between hover:bg-gray-200">
+          <span className="mx-4"> Channels </span>
+        </li>
+      </Link>
       <Link to="/forum">
         <li className="p-3 cursor-pointer rounded-sm flex items-center justify-between hover:bg-gray-200">
           <span className="mx-4"> Forum </span>

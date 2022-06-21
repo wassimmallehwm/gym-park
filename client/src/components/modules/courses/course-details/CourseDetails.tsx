@@ -40,7 +40,7 @@ const CourseDetails = () => {
     }, [])
     return (
         <div className='pt-4'>
-            <div className='flex items-center justify-evenly border-b-2 border-blue-200 text-slate-600'>
+            <div className='flex items-center justify-evenly border-b-2 border-primary-200 text-slate-600'>
             
             <div className={`text-lg w-full text-center cursor-pointer px-4 py-4 hover:bg-blue-100 ${activeIndex == 0 ? 'bg-blue-100' : ''}`} 
                 onClick={() => setActiveIndex(0)}> 

@@ -96,7 +96,7 @@ const CourseForm = ({
                 <label className="text-sm font-bold text-gray-600 block mb-2">
                     Course poster
                 </label>
-                <Button onClick={() => posterRef.current.click()} color='blue' outline>Pick Image</Button>
+                <Button onClick={() => posterRef.current.click()} color="primary" outline>Pick Image</Button>
                 {
                     displayPreview() && <img className='m-auto my-2 max-h-40 shadow-lg' src={displayPreview()} />
                 }

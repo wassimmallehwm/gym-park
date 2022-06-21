@@ -93,7 +93,7 @@ const CourseMedia = ({
                 <label className="text-sm font-bold text-gray-600 block mb-2">
                     Media file
                 </label>
-                <Button onClick={() => fileRef.current.click()} color='blue' outline>Pick file</Button>
+                <Button onClick={() => fileRef.current.click()} color="primary" outline>Pick file</Button>
                 {
                     displayMediaFile() && <video className='m-auto my-2 max-h-40 shadow-lg' preload="none" src={displayMediaFile()!} 
                         controls />
@@ -104,7 +104,7 @@ const CourseMedia = ({
                 <label className="text-sm font-bold text-gray-600 block mb-2">
                     Media poster image
                 </label>
-                <Button onClick={() => posterRef.current.click()} color='blue' outline>Pick Image</Button>
+                <Button onClick={() => posterRef.current.click()} color="primary" outline>Pick Image</Button>
                 {
                     displayImagePreview() && <img className='m-auto my-2 max-h-40 shadow-lg' src={displayImagePreview()} />
                 }

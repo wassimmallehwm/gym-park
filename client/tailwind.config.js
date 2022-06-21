@@ -25,6 +25,20 @@ module.exports = {
       }
     },
   },
+  safelist: [
+    {
+      pattern: /bg-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    },
+    {
+      pattern: /text-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    },
+    {
+      pattern: /border-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    },
+  ],
   variants: {
     animation: ["motion-safe"],
     extend: {},

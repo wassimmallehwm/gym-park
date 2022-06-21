@@ -60,13 +60,13 @@ const Login = () => {
                     </div>
                     <div className="flex items-center justify-between">
                         <div>
-                            <a href="#" className="font-medium text-sm text-blue-500">
+                            <a href="#" className="font-medium text-sm text-primary-500">
                                 Mot de passe oublié ?
                             </a>
                         </div>
                     </div>
                     <div>
-                        <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 
+                        <button type="submit" className="w-full py-2 px-4 bg-primary-500 hover:bg-primary-600 
                         rounded-md text-white text-sm">
                             Submit
                         </button>

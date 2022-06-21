@@ -29,7 +29,7 @@ const Navbar = ({
         { name: 'Sign out', click: onLogout },
     ]
     return (
-        <header className="bg-blue-600 shadow-md h-12 flex items-center justify-center fixed w-full z-30">
+        <header className="bg-primary-600 shadow-md h-12 flex items-center justify-center fixed w-full z-30">
             <div className="flex flex-grow items-center justify-between px-3">
                 <button className="w-10 p-1"
                     onClick={toggleSidebar}

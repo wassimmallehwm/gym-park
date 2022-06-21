@@ -22,10 +22,10 @@ const ErrorFallback = ({ children }: any) => {
             <p className='text-3xl text-gray-600'>{error?.status}</p>
             <pre>{error?.message}</pre>
             <div className='flex gap-4'>
-                <Button color='blue' onClick={tryAgain}>
+                <Button color="primary" onClick={tryAgain}>
                     Try again
                 </Button>
-                <Button color='red' outline onClick={goBack}>
+                <Button color="secondary" outline onClick={goBack}>
                     Go back
                 </Button>
             </div>

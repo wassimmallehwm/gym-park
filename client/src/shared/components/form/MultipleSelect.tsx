@@ -15,7 +15,7 @@ const MultipleSelect = ({
 }: any) => {
     return (
         <AsyncTypeahead
-            className='w-full rounded mt-1 outline-hidden focus:border-blue-300 focus:outline-none focus:ring-1'
+            className='w-full rounded mt-1 outline-hidden focus:border-primary-300 focus:outline-none focus:ring-1'
             multiple
             selected={selected}
             onChange={onChange}

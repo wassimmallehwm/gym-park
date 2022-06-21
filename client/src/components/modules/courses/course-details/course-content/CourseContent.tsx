@@ -124,7 +124,7 @@ const CourseContent = ({
 
 
   const addCourseModal = (
-    <Modal title='Course media' color='blue' open={courseMediaModal}
+    <Modal title='Course media' color="primary" open={courseMediaModal}
       confirm={onSubmitMedia} cancel={closeMediaModal} footerBtns showOverlay={isProgressBar}
       overlay={(<ProgressBar progress={uploadProgress} title="Uploading..." />)} >
       <CourseMedia progress={uploadProgress} onChange={onChangeMedia} courseId={course._id} media={media}
@@ -135,15 +135,15 @@ const CourseContent = ({
 
   const deleteModal = (
     <Confirmation open={deleteMediaModal} confirm={removeMedia}
-      cancel={closeDeleteModal} color="red" text={`Are you sure you want to perform this action ?`} />
+      cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to perform this action ?`} />
   );
 
   const actionRender = (data: any) => (
     <>
-      <Button onClick={() => openEditModal(data)} title="Edit" rounded color="blue">
+      <Button onClick={() => openEditModal(data)} title="Edit" rounded color="primary">
         <FaEdit size="14px" />
       </Button>
-      <Button onClick={() => openDeleteModal(data._id)} title="Delete" rounded color="red">
+      <Button onClick={() => openDeleteModal(data._id)} title="Delete" rounded color="secondary">
         <FaTrash size="14px" />
       </Button>
     </>
@@ -167,10 +167,10 @@ const CourseContent = ({
       {addCourseModal}
       {deleteModal}
       <div className='flex justify-end items-center'>
-        <Button onClick={() => navigate(-1)} rounded title="Return" outline color="red">
+        <Button onClick={() => navigate(-1)} rounded title="Return" outline color="secondary">
           <FaArrowLeft size="14px" />
         </Button>
-        <Button onClick={openAddMediaModal} rounded title="Add" outline color="blue">
+        <Button onClick={openAddMediaModal} rounded title="Add" outline color="primary">
           <FaPlus size="14px" />
         </Button>
       </div>

@@ -50,7 +50,7 @@ const CourseParticipants = ({
 
   const deleteModal = (
     <Confirmation open={deleteParticipantModal} confirm={removeParticipant}
-      cancel={closeDeleteModal} color="red" text={`Are you sure you want to perform this action ?`} />
+      cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to perform this action ?`} />
   );
 
   const addParticipant = async () => {
@@ -94,7 +94,7 @@ const CourseParticipants = ({
           displayValue={(option: any) => option ? `${option?.firstname} ${option?.lastname}` : ''}
           placeholder="Find a participant"
         />
-        <Button color='blue' outline onClick={addParticipant}>
+        <Button color="primary" outline onClick={addParticipant}>
           Add participant
         </Button>
       </div>
@@ -111,7 +111,7 @@ const CourseParticipants = ({
                       {participant.firstname} {participant.lastname}
                     </h6>
                   </div>
-                  <Button color='red' outline onClick={() => openDeleteModal(participant._id)}>
+                  <Button color="secondary" outline onClick={() => openDeleteModal(participant._id)}>
                     Remove
                   </Button>
                 </div>

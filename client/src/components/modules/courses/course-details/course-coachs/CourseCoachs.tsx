@@ -77,7 +77,7 @@ const CourseCoachs = ({
 
   const deleteModal = (
     <Confirmation open={deleteCoachModal} confirm={removeCoach}
-      cancel={closeDeleteModal} color="red" text={`Are you sure you want to perform this action ?`} />
+      cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to perform this action ?`} />
   );
 
 
@@ -94,7 +94,7 @@ const CourseCoachs = ({
           displayValue={(option: any) => option ? `${option?.firstname} ${option?.lastname}` : ''}
           placeholder="Find a coach"
         />
-        <Button color='blue' outline onClick={addCoach}>
+        <Button color="primary" outline onClick={addCoach}>
           Add coach
         </Button>
       </div>
@@ -112,7 +112,7 @@ const CourseCoachs = ({
                       {coach.firstname} {coach.lastname}
                     </h6>
                   </div>
-                  <Button color='red' outline onClick={() => openDeleteModal(coach._id)}>
+                  <Button color="secondary" outline onClick={() => openDeleteModal(coach._id)}>
                     Remove
                   </Button>
                 </div>
