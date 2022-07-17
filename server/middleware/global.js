@@ -12,6 +12,7 @@ const globalMiddelwares = (app, dir) => {
 
   app.use('/api/users', require('../modules/user'))
   app.use('/api/channels', require('../modules/channel'))
+  app.use('/api/messages', require('../modules/message'))
   app.use('/api/medias', require('../modules/media'))
   app.use('/api/roles', require('../modules/role'))
   app.use('/api/courses', require('../modules/course'))

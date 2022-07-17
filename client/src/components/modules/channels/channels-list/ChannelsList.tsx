@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaComment, FaEdit, FaPlus, FaTrash, FaUsers } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { Button, Confirmation, DataGrid, Loader, Modal, PageTitle } from '../../../../shared/components';
+import { AutoComplete } from '../../../../shared/components/form';
+import { showToast } from '../../../../utils';
 import { formateDate } from '../../../../utils/dateFormat';
-import ChannelsForm from '../channels-form/ChannelsForm';
-import { ChannelsService } from '../channels.service';
+import { userImage } from '../../../../utils/filePath';
+import { UsersService } from '../../users/users.service';
+import ChannelsForm from '../channel-form/ChannelsForm';
+import { ChannelsService } from '../services/channels.service';
 
 const ChannelsList = () => {
   const channelsService = new ChannelsService();
+  const usersService = new UsersService();
 
   const initChannel = {
     label: "",
@@ -20,6 +26,13 @@ const ChannelsList = () => {
   const [deleteChannel, setDeleteChannel] = useState<any>();
   const [editChannelModal, setEditChannelModal] = useState<any>(false);
   const [deleteChannelModal, setDeleteChannelModal] = useState<any>(false);
+  const [membersModal, setMembersModal] = useState<any>(false);
+
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [usersList, setUsersList] = useState<any[]>([]);
+  const [membersList, setMembersList] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<any>();
+
   const [mode, setMode] = useState<any>('add');
   const [dataLoading, setDataLoading] = useState<boolean>(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -32,6 +45,7 @@ const ChannelsList = () => {
     sortOrder: null
   })
   const [search, setSearch] = useState<string>('')
+  const navigate = useNavigate();
 
   const getChannels = () => {
     setDataLoading(true)
@@ -52,7 +66,6 @@ const ChannelsList = () => {
     channelsService.findOne(id).then(
       (res: any) => {
         setChannel(res.data);
-        openAddModal()
       },
       error => {
         console.log(error);
@@ -60,16 +73,16 @@ const ChannelsList = () => {
     )
   }
 
-  const removeChannelAccount = () => {
+  const removeChannel = () => {
     channelsService.remove(deleteChannel._id).then(
       (res) => {
         getChannels()
         closeDeleteModal()
-        // Toast("SUCCESS", "Channel deleted successfully");
+        showToast('success', 'Channel deleted successfully')
       },
       error => {
         console.log(error);
-        // Toast("ERROR", "Error deleting Channel !");
+        showToast('error', 'Error deleting Channel')
       }
     )
   }
@@ -82,14 +95,49 @@ const ChannelsList = () => {
   const addOrEditChannel = async () => {
     setLoading(true);
     try {
-      const { data } = await channelsService.addOrUpdate(mode, channel)
+      await channelsService.addOrUpdate(mode, channel)
       setLoading(false);
       getChannels()
       closeAddModal();
+      showToast('success', 'Channel saved successfully')
     } catch (error) {
       console.log(error);
       setLoading(false);
+      showToast('error', 'Error saving Channel')
     }
+  }
+
+  const onMembersSearch = (event: any) => {
+    const q = event.target.value
+    usersService.search(q, '').then(
+      (res: any) => {
+        console.log(res.data)
+        setUsersList(res.data.filter((elem: any) => !channel.members.find((item: any) => elem._id === item._id)))
+      },
+      error => console.log(error)
+    )
+  }
+
+  const addMembers = async () => {
+    setLoading(true);
+    try {
+      let membersId = membersList.map((elem: any) => elem._id)
+      await channelsService.addMembers(channel._id, membersId)
+      setLoading(false);
+      setMembersList([])
+      closeMembersModal()
+      showToast('success', 'Channel saved successfully')
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      showToast('error', 'Error saving Channel')
+    }
+  }
+
+  const onMemberSelect = (selected: any) => {
+    setMembersList([...membersList, selected])
+    setSearchQuery('')
+    //setSelectedUser(selected)
   }
 
   const openAddModal = () => {
@@ -104,8 +152,8 @@ const ChannelsList = () => {
 
   const openEditModal = (data: any) => {
     setMode('edit')
-    //setEditChannel(data)
     getOneChannel(data._id)
+    setEditChannelModal(true)
   }
 
   const openDeleteModal = (data: any) => {
@@ -116,6 +164,17 @@ const ChannelsList = () => {
   const closeDeleteModal = () => {
     setDeleteChannelModal(false);
     setDeleteChannel(null)
+  }
+
+
+  const openMembersModal = (channelId: string) => {
+    getOneChannel(channelId)
+    setMembersModal(true);
+  }
+
+  const closeMembersModal = () => {
+    setMembersModal(false);
+    setChannel(initChannel)
   }
 
   const onChannelChange = (e: any) => {
@@ -135,8 +194,67 @@ const ChannelsList = () => {
     </Modal>
   );
 
+  const channelMembersModal = (
+    <Modal title='Members' color="primary" open={membersModal} confirm={addMembers} cancel={closeMembersModal} footerBtns >
+      Members
+      <div className='h-full min-h-[300px]'>
+        <AutoComplete
+          onChangeValue={onMemberSelect}
+          onChangeQuery={onMembersSearch}
+          options={usersList}
+          selected={selectedUser}
+          resetSelected={() => setSearchQuery('')}
+          displayValue={(option: any) => option ? `${option?.firstname} ${option?.lastname}` : ''}
+          placeholder="Add a member"
+        />
+        {/* <div>
+          {
+            membersList.map((member: any) => (
+              <img key={member._id} className='w-12 h-12 rounded-full mx-2 shadow-md' src={userImage(member?.imagePath)} />
+            ))
+          }
+        </div> */}
+        {
+          membersList.length > 0 && (
+            <div className='p-4 shadow-md rounded-md'>
+              <span className='text-lg'>New members</span>
+              <div className='flex gap-2 flex-wrap py-4'>
+                {
+                  membersList.map((member: any) => (
+                    <div className='group w-12 h-12 rounded-full mx-2 shadow-md'>
+                      <img key={member._id} className='w-12 h-12 rounded-full shadow-md' src={userImage(member?.imagePath)} />
+                      <p className='group-hover:block hidden w-max -ml-8 mt-1 text-sm bg-gray-700 text-white p-2 rounded-md'>
+                        {member.firstname} {member.lastname}
+                      </p>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          )
+        }
+
+        <div className='p-4 shadow-md rounded-md'>
+          <span className='text-lg'>Current members</span>
+          <div className='flex gap-2 flex-wrap py-4'>
+            {
+              channel.members?.map((member: any) => (
+                <div className='group w-12 h-12 rounded-full mx-2 shadow-md'>
+                  <img key={member._id} className='w-12 h-12 rounded-full shadow-md' src={userImage(member?.imagePath)} />
+                  <p className='group-hover:block hidden w-max -ml-8 mt-1 text-sm bg-gray-700 text-white p-2 rounded-md'>
+                    {member.firstname} {member.lastname}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+
   const deleteModal = (
-    <Confirmation open={deleteChannelModal} confirm={removeChannelAccount}
+    <Confirmation open={deleteChannelModal} confirm={removeChannel}
       cancel={closeDeleteModal} color="secondary" text={`Are you sure you want to delete the Channel ?`} />
   );
 
@@ -146,7 +264,7 @@ const ChannelsList = () => {
   }
 
   const isPrivateRender = (data: any) => {
-    if(data.isPrivate){
+    if (data.isPrivate) {
       return <p className='bg-secondary-600 text-xs text-white text-center py-1 px-2 rounded-lg w-min mx-auto'>Private</p>
     } else {
       return <p className='bg-primary-600 text-xs text-white text-center py-1 px-2 rounded-lg w-min mx-auto'>Public</p>
@@ -155,10 +273,20 @@ const ChannelsList = () => {
 
   const actionRender = (data: any) => (
     <>
-      <Button rounded onClick={() => openEditModal(data)} color="primary">
+      <Button rounded title="Edit" onClick={() => openEditModal(data)} color="primary">
         <FaEdit size="14px" />
       </Button>
-      <Button rounded onClick={() => openDeleteModal(data)} color="secondary">
+      {
+        data.isPrivate && (
+          <Button rounded title="Members" onClick={() => openMembersModal(data._id)} color="primary">
+            <FaUsers size="14px" />
+          </Button>
+        )
+      }
+      <Button rounded title="Messages" onClick={() => navigate(`/channels/${data._id}`)} color="primary">
+        <FaComment size="14px" />
+      </Button>
+      <Button rounded title="Delete" onClick={() => openDeleteModal(data)} color="secondary">
         <FaTrash size="14px" />
       </Button>
     </>
@@ -204,6 +332,7 @@ const ChannelsList = () => {
   return (
     <div className="main-div">
       {addChannelModal}
+      {channelMembersModal}
       {deleteModal}
       <PageTitle color='primary'>Channels</PageTitle>
       <div className="flex justify-between items-center my-2">

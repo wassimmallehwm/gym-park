@@ -5,3 +5,11 @@
 .aspect-1 {
     aspect-ratio: 1;
 }
+
+.rtl{
+    direction: rtl;
+}
+
+.chatBox{
+    height: calc(100vh - 150px)!important;
+}

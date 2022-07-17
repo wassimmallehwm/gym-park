@@ -1,15 +1,31 @@
 const express = require('express');
 const app = express();
+const http = require('http');
+const { Server } = require("socket.io");
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3030;
 
 const dbConnect = require('./database');
 const {globalMiddelwares} = require('./middleware');
+const ioConfig = require('./socket');
 
 globalMiddelwares(app, __dirname);
 dbConnect();
 
-app.listen(PORT, () => {
-  console.info('Listening on port ' + PORT);
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+    }
+});
+
+app.all("*",function(req, res, next){
+    req.io = io;
+    next();
+});
+
+ioConfig(io)
+server.listen(PORT, () => {
+    console.log('Listening on port ' + PORT);
 });

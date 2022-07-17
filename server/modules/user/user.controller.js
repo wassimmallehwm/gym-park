@@ -198,7 +198,7 @@ module.exports.remove = async (req, res) => {
 
 module.exports.search = async (req, res) => {
   try {
-    const { role, q } = req.query
+    const { roles, q } = req.query
     const filter = {
       '_id': { $ne: req.user },
       $or: [
@@ -211,7 +211,10 @@ module.exports.search = async (req, res) => {
       .select('firstname lastname imagePath')
       .limit(5)
       .exec();
-    users = users.filter(user => user.roles.find(item => item.label == role))
+      if(roles && roles !== ""){
+        const _roles = roles.split(',')
+        users = users.filter(user => user.roles.find(item => _roles.includes(item.label)))
+      }
     res.status(200).json(users);
   } catch (e) {
     console.log('ERROR', e);

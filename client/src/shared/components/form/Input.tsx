@@ -9,8 +9,13 @@ const Input = ({ ...props }: InputProps) => {
     if(props.disabled){
         editableClass = " bg-transparent border-none p-0"
     }
-    return <input className={`w-full rounded mt-1 outline-hidden focus:border-primary-300 focus:outline-none focus:ring-1 ${editableClass}`} 
-        disabled={props.disabled} {...props} />;
+    return props.textarea ? (
+        <textarea className={`w-full resize-none rounded mt-1 outline-hidden focus:border-primary-300 focus:outline-none focus:ring-1 ${editableClass}`} 
+        disabled={props.disabled} {...props}></textarea>
+    ) : (
+        <input className={`w-full rounded mt-1 outline-hidden focus:border-primary-300 focus:outline-none focus:ring-1 ${editableClass}`} 
+        disabled={props.disabled} {...props} />
+    );
 };
 
 export default Input;

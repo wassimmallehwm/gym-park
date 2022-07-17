@@ -63,7 +63,7 @@ const CourseCoachs = ({
 
   const onCoachSearch = (event: any) => {
     const q = event.target.value
-    usersService.search('COACH', q).then(
+    usersService.search(q, 'COACH').then(
       (res: any) => {
         setCoachsList(res.data.filter((elem: any) => !course.coachs.find((item: any) => elem._id === item._id)))
       },

@@ -1,5 +1,4 @@
-import { Method } from "axios";
-import { BaseService } from '../../../shared/services/base.service';
+import { BaseService } from '../../../../shared/services/base.service';
 
 export class ChannelsService extends BaseService {
     SRC_URL = "channels/";
@@ -30,6 +29,10 @@ export class ChannelsService extends BaseService {
         return this.httpClient(this.httpUrl(id), 'DELETE');
     }
 
+    addMembers(id: string, members: any){
+        return this.httpClient(this.httpUrl(`${id}/members`), 'POST', members);
+    }
+
     // findAll(query: any){
     //     return this.http('findall', 'POST', query);
     // }
@@ -37,5 +40,6 @@ export class ChannelsService extends BaseService {
     // remove(id: string){
     //     return this.http(id, 'DELETE');
     // }
+
 }
 

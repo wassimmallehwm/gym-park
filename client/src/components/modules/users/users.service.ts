@@ -203,7 +203,7 @@ export class UsersService extends BaseService {
         return this.http(url, method, data);
     }
 
-    search(role: string, q: string){
+    search(q: string, role: string = ""){
         const url = `search?role=${role.toUpperCase()}&q=${q}`
         return this.http(url, 'GET');
     }
