@@ -19,25 +19,27 @@ const {
 const router = express.Router();
 
 var multer  = require('multer');
+const { auth, hasRoles } = require('../../middleware/auth');
 
 var upload = multer() ;
 
-router.post('/', fileUpload('courses').single('poster'), create);
+router.post('/', auth, fileUpload('courses').single('poster'), create);
 
-router.get('/', getAll);
+router.get('/', auth, getAll);
 
-router.get('/list', getList);
+router.get('/list', auth, hasRoles, getList);
 
-router.get('/:id', getById);
+router.get('/:id', auth, getById);
 
-router.get('/:id/full', getByIdFull);
+router.get('/:id/full', auth, getByIdFull);
 
-router.put('/:id', update);
+router.put('/:id', auth, update);
 
-router.delete('/:id', remove);
+router.delete('/:id', auth, remove);
 
 router.post(
     '/media/:id',
+    auth,
     courseMediaFileUpload().fields([
         {name: "posterfile", maxCount: 1},
         {name: "mediafile", maxCount: 1}
@@ -48,6 +50,7 @@ router.post(
 
 router.put(
     '/media/:id/:mediaId',
+    auth,
     courseMediaFileUpload().fields([
         {name: "posterfile", maxCount: 1},
         {name: "mediafile", maxCount: 1}
@@ -58,17 +61,18 @@ router.put(
 
 router.delete(
     '/media/:courseId/:mediaId',
+    auth,
     removeCourseMedia,
     removeMedia
 );
 
-router.post('/participant', addCourseParticipant);
+router.post('/participant', auth, addCourseParticipant);
 
-router.put('/participant/:courseId/:participantId', removeCourseParticipant);
+router.put('/participant/:courseId/:participantId', auth, removeCourseParticipant);
 
-router.post('/coach', addCourseCoach);
+router.post('/coach', auth, addCourseCoach);
 
-router.put('/coach/:courseId/:coachId', removeCourseCoach);
+router.put('/coach/:courseId/:coachId', auth, removeCourseCoach);
 
 
 

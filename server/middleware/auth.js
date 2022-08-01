@@ -32,7 +32,7 @@ module.exports.admin = async (req, res, next) => {
         .exec();
         const adminRole = user.roles.find(elem => elem.label === 'ADMIN');
         if(!adminRole){
-            return res.status(403).json({msg : "Not Authorized (Admin Route) !"})
+            return res.status(403).json({msg : "Permission denied"})
         }
         next();
     } catch(e){
@@ -48,6 +48,23 @@ module.exports.ownerOrAdmin = async (req, res, next) => {
         if(user.role.label != 'ADMIN' && user._id != id){
             return res.status(403).json({msg : "Not Authorized !"})
         }
+        next();
+    } catch(e){
+        res.status(500).json({error: e});
+    }
+}
+module.exports.hasRoles = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.user)
+        .populate({ path: 'roles', model: 'Role', select: 'label' })
+        .exec();
+        let roles = []
+        user.roles.forEach(role => {
+            if(role.label != "ADMIN"){
+                roles.push(role)
+            }
+        });
+        req.roles = roles
         next();
     } catch(e){
         res.status(500).json({error: e});

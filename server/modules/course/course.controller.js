@@ -1,5 +1,6 @@
 const Course = require("./course.model");
 const errorHandler = require("../../utils/errorHandler");
+const mongoose = require("mongoose");
 const exec = require('child_process').exec;
 
 const createCourseDir = (id) => {
@@ -37,7 +38,6 @@ module.exports.create = async (req, res) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
-
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -80,7 +80,6 @@ module.exports.getByIdFull = async (req, res) => {
   }
 };
 
-
 module.exports.getList = async (req, res) => {
   try {
     const { page = 1, limit = 20, sortField, sortOrder } = req.query;
@@ -97,7 +96,20 @@ module.exports.getList = async (req, res) => {
       }
     }
 
-    const result = await Course.paginate({}, options);
+    let query = {}
+
+    if(req.roles && req.roles.length > 0){
+      req.roles.forEach(role => {
+        if(role.label == "COACH"){
+          query.coachs = mongoose.Types.ObjectId(req.user)
+        }
+        if(role.label == "USER"){
+          query.participants = mongoose.Types.ObjectId(req.user)
+        }
+      });
+    }
+
+    const result = await Course.paginate(query, options);
     return res.status(200).json(result);
   } catch (err) {
     console.error("Course list failed: " + err);
@@ -105,7 +117,6 @@ module.exports.getList = async (req, res) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
-
 
 module.exports.update = async (req, res) => {
   try {
@@ -120,7 +131,6 @@ module.exports.update = async (req, res) => {
   }
 };
 
-
 module.exports.remove = async (req, res) => {
   try {
     const { id } = req.params;
@@ -132,6 +142,7 @@ module.exports.remove = async (req, res) => {
     res.status(status).json({ message, entity: 'Course' })
   }
 };
+
 
 
 module.exports.createCourseMedia = async (req, res) => {
