@@ -1,0 +1,27 @@
+[
+    {
+        "label": "Home",
+        "url": "/",
+        "roles": ["ADMIN", "COACH", "USER"]
+    },
+    {
+        "label": "Users",
+        "url": "/users",
+        "roles": ["ADMIN"]
+    },
+    {
+        "label": "Courses",
+        "url": "/courses",
+        "roles": ["ADMIN", "COACH"]
+    },
+    {
+        "label": "Channels",
+        "url": "/channels",
+        "roles": ["ADMIN"]
+    },
+    {
+        "label": "Forum",
+        "url": "/forum",
+        "roles": ["ADMIN", "COACH", "USER"]
+    }
+]

@@ -6,7 +6,7 @@ import Login from './components/modules/auth/Login';
 
 import { AppContext } from './contexts';
 import appRoutes from './routes';
-import { Loader } from './shared/components';
+import { ErrorFallback, Loader } from './shared/components';
 import { GuestRoute, ProtectedRoute } from './shared/guards';
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
@@ -23,40 +23,42 @@ function App() {
     <BrowserRouter>
       <AppContext>
         <Layout>
-          <Toaster/>
-          <Routes>
-            {appRoutes.map((route, i) => {
-              if (route.status == 'PROTECTED') {
-                return (
-                  <Route key={i} path={route.path} element={
-                    <Suspense fallback={(<Loader />)}>
-                      <ProtectedRoute>
-                      <route.component/>
-                      </ProtectedRoute>
-                    </Suspense>
-                  } />
-                )
-              } else if (route.status == 'GUEST') {
-                return (
-                  <Route key={i} path={route.path} element={
-                    <Suspense fallback={(<Loader />)}>
-                      <GuestRoute>
-                      <route.component/>
-                      </GuestRoute>
-                    </Suspense>
-                  } />
-                )
-              } else {
-                return (
-                  <Route key={i} path={route.path} element={
-                    <Suspense fallback={(<Loader />)}>
-                      <route.component/>
-                    </Suspense>
-                  } />
-                )
-              }
-            })}
-          </Routes>
+          <Toaster />
+          <ErrorFallback>
+            <Routes>
+              {appRoutes.map((route, i) => {
+                if (route.status == 'PROTECTED') {
+                  return (
+                    <Route key={i} path={route.path} element={
+                      <Suspense fallback={(<Loader />)}>
+                        <ProtectedRoute roles={route.roles}>
+                          <route.component />
+                        </ProtectedRoute>
+                      </Suspense>
+                    } />
+                  )
+                } else if (route.status == 'GUEST') {
+                  return (
+                    <Route key={i} path={route.path} element={
+                      <Suspense fallback={(<Loader />)}>
+                        <GuestRoute>
+                          <route.component />
+                        </GuestRoute>
+                      </Suspense>
+                    } />
+                  )
+                } else {
+                  return (
+                    <Route key={i} path={route.path} element={
+                      <Suspense fallback={(<Loader />)}>
+                        <route.component />
+                      </Suspense>
+                    } />
+                  )
+                }
+              })}
+            </Routes>
+          </ErrorFallback>
         </Layout>
       </AppContext>
     </BrowserRouter>

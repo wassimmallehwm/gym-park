@@ -191,7 +191,6 @@ const Users = () => {
     }
 
     const rolesRender = (data: any) => {
-        console.log(data.roles)
         return data.roles.map(function (elem: any) {
             return elem.label;
         }).join(",");

@@ -1,0 +1,40 @@
+<div className='grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-4' >
+{
+          course && course.content.map((item: any) => (
+            <div key={item._id} className='flex flex-col items-center justify-around h-full w-full aspect-1 cursor-pointer hover:shadow-lg'>
+              {
+                item.display ? (
+                  <video className='aspect-1' controls src={courseContentFile(course._id, item.path)} poster={courseContentFile(course._id, item.poster)} />
+                ) : (
+                  <img src={courseContentFile(course._id, item.poster)}
+                    onClick={() => { displayCourseMedia(item._id) }} />
+                )
+              }
+              <div className='p-2'>
+
+                <h6 className='text-2xl text-center'> {item.label} </h6>
+                <p className='text-md text-justify'> {item.description} </p>
+              </div>
+            </div>
+          ))
+        }
+</div>
+
+
+
+
+
+  const displayCourseMedia = (id: string) => {
+    setCourse((prev: any) => {
+      return {
+        ...prev,
+        content: prev.content.map((elem: any) => {
+          if (elem._id === id) {
+            elem['display'] = true
+            return elem
+          }
+          return elem
+        })
+      }
+    })
+  }

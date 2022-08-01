@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React, { useEffect, useRef, useState } from 'react'
-import { FaImage } from 'react-icons/fa'
+import { FaImage, FaTrash } from 'react-icons/fa'
 import { Button, PageTitle } from '../../../../shared/components'
 import { showToast } from '../../../../utils'
 import { forumImage, userImage } from '../../../../utils/filePath'
@@ -36,12 +36,21 @@ const ForumPage = () => {
         reader.readAsDataURL(file)
     }
 
+    const removeImg = () => {
+        setForumMedia(null)
+        setMediaPreview(null)
+    }
+
+    const getUniqueListBy = (arr: any, key: string) => {
+        //return Array.from(new Set(arr.map(JSON.stringify))).map(JSON.parse);
+        //return [...new Map(arr.map(item => [item[key], item])).values()]
+    }
+
     const getForumList = () => {
         forumService.list({
             page
         }).then(
             (res: any) => {
-                //setForumList(res.data.docs)
                 if (res.data.docs.length > 0) {
                     setTotalItems(res.data.total)
                     setForumList((prev: any[]) => ([...prev, ...res.data.docs]))
@@ -86,9 +95,14 @@ const ForumPage = () => {
                         mediaPreview && <img className='w-56 mx-auto my-4 shadow-md' src={mediaPreview} />
                     }
                     <div className='my-2 flex items-center justify-between'>
-                        <Button title="Attach image" onClick={() => mediaRef.current.click()} color="primary" outline rounded>
-                            <FaImage />
-                        </Button>
+                        <div>
+                            <Button title="Attach image" onClick={() => mediaRef.current.click()} color="primary" outline rounded>
+                                <FaImage />
+                            </Button>
+                            <Button title="Remove image" onClick={removeImg} color="secondary" outline rounded>
+                                <FaTrash />
+                            </Button>
+                        </div>
                         <Button title="Create" onClick={onForumCreate} color="primary">
                             Post
                         </Button>
@@ -119,7 +133,7 @@ const ForumPage = () => {
                                         ))
                                     }
                                     {
-                                        forumList.length > 0 && totalItems > forumList.length && 
+                                        forumList.length > 0 && totalItems > forumList.length &&
                                         <span onClick={() => setPage((prev: number) => ++prev)} className='text-center text-primary-600 cursor-pointer underline'>
                                             Load more
                                         </span>

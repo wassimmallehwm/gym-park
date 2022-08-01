@@ -5,7 +5,8 @@ const homeRoutes: any[] = [
     {
         path: "/",
         component: Home,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN", "COACH", "USER"]
     },
 ]
 

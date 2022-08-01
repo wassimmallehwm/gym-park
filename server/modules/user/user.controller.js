@@ -35,7 +35,7 @@ function userResponse(data) {
     lastname,
     email,
     phone,
-    role: roles[0]._id,
+    roles,
     isAdmin: roles[0].label == "ADMIN" ? true : false,
     createdAt,
     imagePath

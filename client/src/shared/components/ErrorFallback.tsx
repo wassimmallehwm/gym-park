@@ -17,14 +17,19 @@ const ErrorFallback = ({ children }: any) => {
         error?.tryAgain()
     }
     return error ? (
-        <div className='w-full h-full mt-16 flex justify-center items-center flex-col'>
-            <p>Something went wrong:</p>
-            <p className='text-3xl text-gray-600'>{error?.status}</p>
-            <pre>{error?.message}</pre>
-            <div className='flex gap-4'>
-                <Button color="primary" onClick={tryAgain}>
-                    Try again
-                </Button>
+        <div className='w-full h-[60vh] mt-16 flex justify-center items-center flex-col'>
+            {/* <p>Something went wrong:</p> */}
+            <p className='text-7xl text-gray-500 my-1'>{error?.status}</p>
+            <pre className='text-2xl my-1'>{error?.message}</pre>
+            <div className='flex gap-4 my-8'>
+                {
+                    error?.tryAgain && (
+                        <Button color="primary" onClick={tryAgain}>
+                            Try again
+                        </Button>
+                    )
+                }
+
                 <Button color="secondary" outline onClick={goBack}>
                     Go back
                 </Button>

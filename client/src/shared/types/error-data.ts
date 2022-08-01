@@ -6,7 +6,7 @@ export class ErrorData {
     constructor(json?: {
         status: number,
         message: string,
-        tryAgain: any
+        tryAgain?: any
     }) {
         this.status = json?.status!;
         this.message = json?.message!;

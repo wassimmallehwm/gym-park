@@ -31,7 +31,13 @@ const ChannelMessages = () => {
   const getMessagesList = () => {
     messagesService.findByChannel(id!).then(
       res => {
-        setMessages((prev: any[]) => ([...res.data, ...prev]))
+        let list: any[] = [];
+        for (let index = 0; index < res.data.length; index++) {
+          if(messages.find((elem: any) => elem._id === res.data[index]._id) == undefined){
+            list.push(res.data[index])
+          }
+        }
+        setMessages((prev: any[]) => ([...list, ...prev]))
         scrollToBottom()
       },
       error => {

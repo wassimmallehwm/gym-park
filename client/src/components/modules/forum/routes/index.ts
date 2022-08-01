@@ -5,7 +5,8 @@ const forumRoutes: any[] = [
     {
         path: "/forum",
         component: ForumPage,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN", "COACH", "USER"]
     },
 ]
 

@@ -5,7 +5,8 @@ const usersRoutes: any[] = [
     {
         path: "/users",
         component: Users,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN"]
     },
 ]
 

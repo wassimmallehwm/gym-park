@@ -6,12 +6,14 @@ const coursesRoutes: any[] = [
     {
         path: "/courses",
         component: Courses,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN", "COACH"]
     },
     {
         path: "/courses/:id",
         component: CourseDetails,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN", "COACH"]
     },
 ]
 

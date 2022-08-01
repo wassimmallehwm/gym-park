@@ -6,12 +6,14 @@ const channelsRoutes: any[] = [
     {
         path: "/channels",
         component: ChannelsList,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN"]
     },
     {
         path: "/channels/:id",
         component: ChannelMessages,
-        status: 'PROTECTED'
+        status: 'PROTECTED',
+        roles: ["ADMIN"]
     },
     
 ]
