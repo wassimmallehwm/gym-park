@@ -21,21 +21,30 @@ module.exports = {
           400: '#981c49',
           500: '#8C0335',
           600: '#7e0330'
+        },
+        'success': {
+          50: '#eafaee',
+          100: '#c1f0cc',
+          200: '#98e6aa',
+          300: '#46d366',
+          400: '#28a745',
+          500: '#22903c',
+          600: '#19672b'
         }  
       }
     },
   },
   safelist: [
     {
-      pattern: /bg-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /bg-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
     {
-      pattern: /text-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /text-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
     {
-      pattern: /border-(primary|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /border-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
   ],

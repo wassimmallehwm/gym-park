@@ -1,6 +1,10 @@
 import { Method } from "axios";
-import { Config } from "../../../config/Config";
-import { BaseService } from '../../../shared/services/base.service';
+import { Config } from "../../../../config/Config";
+import { BaseService } from '../../../../shared/services/base.service';
+
+interface ReqOptions{
+    all?: boolean
+}
 
 export class CoursesService extends BaseService {
     SRC_URL = "courses/";
@@ -17,8 +21,9 @@ export class CoursesService extends BaseService {
         return this.http('findall', 'POST', query);
     }
 
-    list(query: any){
-        return this.http('list', 'GET', query);
+    list(query: any, options: ReqOptions = {}){
+        const url = options.all ? 'list/all' : 'list'
+        return this.http(url, 'GET', query);
     }
 
     findOne(id: string){

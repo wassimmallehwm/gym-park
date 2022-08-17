@@ -4,7 +4,7 @@ import { AutoComplete } from '../../../../../shared/components/form'
 import { dismissAllToasts, showToast } from '../../../../../utils'
 import { userImage } from '../../../../../utils/filePath'
 import { UsersService } from '../../../users/users.service'
-import { CoursesService } from '../../courses.service'
+import { CoursesService } from '../../services/courses.service'
 
 interface CourseParticipantsProps {
   course: any

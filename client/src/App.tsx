@@ -11,6 +11,8 @@ import { GuestRoute, ProtectedRoute } from './shared/guards';
 // import { ErrorFallback, Loader } from '@shared/components';
 // import { GuestRoute, ProtectedRoute } from '@shared/guards';
 
+// import { ProtectedRoute } from '@shared/guards'
+
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";
@@ -23,9 +25,9 @@ function App() {
   return (
 
     <BrowserRouter>
+    <Toaster />
       <AppContext>
         <Layout>
-          <Toaster />
           <ErrorFallback>
             <Routes>
               {appRoutes.map((route, i) => {

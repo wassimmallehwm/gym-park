@@ -5,7 +5,7 @@ import moment from 'moment';
 import { AuthContext } from '../../../../contexts/auth/AuthContext';
 import { FaEdit, FaList, FaPlus, FaTrash, FaVideo } from 'react-icons/fa';
 import CourseForm from '../course-form/CourseForm';
-import { CoursesService } from '../courses.service';
+import { CoursesService } from '../services/courses.service';
 import { AxiosResponse } from 'axios';
 import { courseImage } from '../../../../utils/filePath';
 import { formateDate, formateDateTime } from '../../../../utils/dateFormat';
@@ -102,6 +102,7 @@ const Courses = () => {
             courseData.append("label", editCourse.label);
             courseData.append("description", editCourse.description);
             courseData.append("date", editCourse.date);
+            courseData.append("level", editCourse.level);
         } else {
             courseData = editCourse
         }

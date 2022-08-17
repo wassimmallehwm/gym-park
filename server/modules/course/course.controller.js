@@ -4,9 +4,8 @@ const mongoose = require("mongoose");
 const exec = require('child_process').exec;
 
 const createCourseDir = (id) => {
-  exec(`mkdir ${__dirname}\\public\\courses\\${id}`, (error, stdout, stderr) => {
+  exec(`mkdir public\\courses\\${id}`, (error, stdout, stderr) => {
     if (error) {
-      runBackup = false;
       console.error(error)
     }
     console.log("course folder created.")

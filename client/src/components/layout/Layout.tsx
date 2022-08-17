@@ -16,7 +16,7 @@ const Layout = ({ children }: any) => {
             <Sidebar isOpen={isSidebarOpen}></Sidebar>
             {isSidebarOpen && <div onClick={() => openSidebar(false)} className='top-0 left-0 w-full h-full fixed bg-black bg-opacity-40 z-10'></div>}
             
-            <main className='pt-12 p-8 bg-slate-100 min-h-screen'>
+            <main className='pt-12 p-8 bg-slate-100 fixed w-full h-full overflow-auto'>
                 {children}
             </main>
         </>

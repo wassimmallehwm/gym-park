@@ -15,6 +15,11 @@
         "roles": ["ADMIN", "COACH"]
     },
     {
+        "label": "Subscriptions",
+        "url": "/subscriptions",
+        "roles": ["ADMIN"]
+    },
+    {
         "label": "Channels",
         "url": "/channels",
         "roles": ["ADMIN"]

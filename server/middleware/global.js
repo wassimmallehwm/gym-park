@@ -16,6 +16,7 @@ const globalMiddelwares = (app, dir) => {
   app.use('/api/medias', require('../modules/media'))
   app.use('/api/roles', require('../modules/role'))
   app.use('/api/courses', require('../modules/course'))
+  app.use('/api/subscriptions', require('../modules/subscription'))
   app.use('/api/bookings', require('../modules/booking'))
   app.use('/api/notifications', require('../modules/notification'))
   app.use('/api/forum', require('../modules/forum'))

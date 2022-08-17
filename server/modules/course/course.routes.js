@@ -18,16 +18,16 @@ const {
 } = require('./course.controller');
 const router = express.Router();
 
-var multer  = require('multer');
-const { auth, hasRoles } = require('../../middleware/auth');
+const { auth, withRoles } = require('../../middleware/auth');
 
-var upload = multer() ;
 
 router.post('/', auth, fileUpload('courses').single('poster'), create);
 
 router.get('/', auth, getAll);
 
-router.get('/list', auth, hasRoles, getList);
+router.get('/list/all', auth, getList);
+
+router.get('/list', auth, withRoles, getList);
 
 router.get('/:id', auth, getById);
 

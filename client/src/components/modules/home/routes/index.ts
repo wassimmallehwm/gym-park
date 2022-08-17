@@ -5,7 +5,7 @@ const homeRoutes: any[] = [
     {
         path: "/",
         component: Home,
-        status: 'GUEST'
+        status: 'PAGE'
     },
 ]
 

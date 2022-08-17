@@ -53,7 +53,7 @@ module.exports.ownerOrAdmin = async (req, res, next) => {
         res.status(500).json({error: e});
     }
 }
-module.exports.hasRoles = async (req, res, next) => {
+module.exports.withRoles = async (req, res, next) => {
     try{
         const user = await User.findById(req.user)
         .populate({ path: 'roles', model: 'Role', select: 'label' })

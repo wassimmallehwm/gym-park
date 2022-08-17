@@ -5,7 +5,7 @@ import { Button, Confirmation, DataGrid, Grid, Modal, ProgressBar } from '../../
 import { compressfile } from '../../../../../utils/compressFile'
 import { formateDateTime } from '../../../../../utils/dateFormat'
 import { courseContentFile } from '../../../../../utils/filePath'
-import { CoursesService } from '../../courses.service'
+import { CoursesService } from '../../services/courses.service'
 import CourseMedia from './course-media/CourseMedia'
 
 interface CourseContentProps {
