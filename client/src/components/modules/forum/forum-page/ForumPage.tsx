@@ -99,9 +99,14 @@ const ForumPage = () => {
                             <Button title="Attach image" onClick={() => mediaRef.current.click()} color="primary" outline rounded>
                                 <FaImage />
                             </Button>
-                            <Button title="Remove image" onClick={removeImg} color="secondary" outline rounded>
-                                <FaTrash />
-                            </Button>
+                            {
+                                forumMedia && (
+                                    <Button title="Remove image" onClick={removeImg} color="secondary" outline rounded>
+                                        <FaTrash />
+                                    </Button>
+                                )
+                            }
+
                         </div>
                         <Button title="Create" onClick={onForumCreate} color="primary">
                             Post

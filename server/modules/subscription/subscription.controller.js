@@ -47,7 +47,11 @@ module.exports.getList = async (req, res) => {
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
-      sort: {}
+      sort: {},
+      populate: [
+        { path: 'user', model: 'User', select: 'firstname lastname' },
+        { path: 'course', model: 'Course', select: 'label' }
+      ]
 
     };
 
@@ -68,11 +72,11 @@ module.exports.getList = async (req, res) => {
   }
 };
 
-const treateSubScription = async (id, approved) => {
+const treateSubScription = async (id, user, approved) => {
   const data = {
     approved: approved,
     isTreated: true,
-    treatedBy: req.user
+    treatedBy: user
   }
   const result = await Subscription.findOneAndUpdate({ _id: id }, data, { new: true });
   return result
@@ -81,7 +85,7 @@ const treateSubScription = async (id, approved) => {
 module.exports.approve = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await treateSubScription(id, true)
+    const result = await treateSubScription(id, req.user, true)
 
     await Course.updateOne(
       { _id: result.course },
@@ -97,7 +101,7 @@ module.exports.approve = async (req, res) => {
 module.exports.reject = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await treateSubScription(id, false)
+    const result = await treateSubScription(id, req.user, false)
 
     return res.status(200).json(result);
   } catch (err) {

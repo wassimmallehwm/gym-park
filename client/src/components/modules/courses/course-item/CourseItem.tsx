@@ -2,7 +2,7 @@ import { Button } from 'src/shared/components'
 import React from 'react'
 import { FaUsers } from 'react-icons/fa'
 import { courseImage } from 'src/utils/filePath'
-import { SubscriptionsService } from '../services/subscription.service'
+import { SubscriptionsService } from '../../subscription/services/subscription.service'
 import { showToast } from 'src/utils'
 
 const levelColor = (level: string) => {
@@ -31,7 +31,6 @@ const CourseItem = ({
                 user,
                 course: course._id
             })
-            console.log(data)
 
             showToast('success', 'Subscription request sent successfully')
         } catch (e: any) {
