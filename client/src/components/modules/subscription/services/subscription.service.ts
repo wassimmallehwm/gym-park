@@ -27,8 +27,8 @@ export class SubscriptionsService extends BaseService {
         return this.httpClient(this.httpUrl(`approve/${id}`), "PUT", null);
     }
     
-    reject(id: string){
-        return this.httpClient(this.httpUrl(`reject/${id}`), "PUT", null);
+    reject(id: string, comment: string){
+        return this.httpClient(this.httpUrl(`reject/${id}`), "PUT", {comment});
     }
 
 }

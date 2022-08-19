@@ -30,7 +30,8 @@ const SubscriptionSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: false,
-        unique: false
+        unique: false,
+        default: ''
     },
     
 }, {

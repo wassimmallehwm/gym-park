@@ -72,11 +72,12 @@ module.exports.getList = async (req, res) => {
   }
 };
 
-const treateSubScription = async (id, user, approved) => {
+const treateSubScription = async (id, user, approved, comment = '') => {
   const data = {
     approved: approved,
     isTreated: true,
-    treatedBy: user
+    treatedBy: user,
+    comment
   }
   const result = await Subscription.findOneAndUpdate({ _id: id }, data, { new: true });
   return result
@@ -101,7 +102,7 @@ module.exports.approve = async (req, res) => {
 module.exports.reject = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await treateSubScription(id, req.user, false)
+    const result = await treateSubScription(id, req.user, false, req.body.comment)
 
     return res.status(200).json(result);
   } catch (err) {
