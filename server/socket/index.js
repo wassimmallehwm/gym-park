@@ -31,9 +31,14 @@ const ioConfig = (io) => {
     io.on('connect', (socket) => {
         console.log("User connected : ", socket.id)
 
-
         socket.on('join_channel', channelId => {
             socket.join(channelId)
+        })
+
+        socket.on('user_roles', data => {
+            data.forEach(role => socket.join(role))
+            const clients = io.sockets.adapter.rooms.get('ADMIN');
+            console.log(clients)
         })
 
         socket.on('message', data => {

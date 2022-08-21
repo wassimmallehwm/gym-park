@@ -16,7 +16,7 @@ const Sidebar = ({
 
   const initMenus = () => {
     let result: any[] = []
-    const rolesMap = new Map(user.roles.map((item: any) => [item.label, item.label]));
+    const rolesMap = new Map(user?.roles?.map((item: any) => [item.label, item.label]));
     menus.forEach((menu: any) => {
       menu.roles.forEach((role: string) => {
         if (role == rolesMap.get(role)) {

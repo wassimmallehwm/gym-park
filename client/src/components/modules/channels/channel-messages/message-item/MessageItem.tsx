@@ -17,9 +17,9 @@ const MessageItem = ({
         <div className={`flex items-center my-4 px-4 ${user._id == sender._id ? 'justify-end flex-row-reverse rtl' : ''}`}>
             {
                 user._id !== sender._id && (
-                    <div className='group -mt-4 min-w-max'>
+                    <div className='group -mt-4 min-w-max relative'>
                         <img className='w-10 h-10 rounded-full mx-2 shadow-md' src={userImage(sender.imagePath)} />
-                        <p className='group-hover:block hidden absolute w-max -ml-8 mt-1 text-sm bg-gray-700 text-white p-2 rounded-md'>
+                        <p className='group-hover:block hidden absolute -top-12 left-10 w-max -ml-8 mt-1 text-sm bg-gray-700 text-white p-2 rounded-md'>
                             {sender.firstname} {sender.lastname}
                         </p>
                     </div>

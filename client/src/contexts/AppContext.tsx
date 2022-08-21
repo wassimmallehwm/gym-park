@@ -4,13 +4,15 @@ import { ErrorProvider } from './error/ErrorProvider'
 import { SettingsProvider } from './settings/SettingsProvider'
 import { SocketProvider } from './socket/SocketProvider'
 
-const AppContext = ({children}: any) => {
+const AppContext = ({ children }: any) => {
     return (
         <ErrorProvider>
             <AuthProvider>
-                <SettingsProvider>
+                <SocketProvider>
+                    <SettingsProvider>
                         {children}
-                </SettingsProvider>
+                    </SettingsProvider>
+                </SocketProvider>
             </AuthProvider>
         </ErrorProvider>
     )

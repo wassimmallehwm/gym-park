@@ -1,12 +1,15 @@
 import { Button, DataGrid, Loader, Modal, PageTitle } from '../../../../../shared/components';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { formateDateTime } from 'src/utils/dateFormat';
 import { SubscriptionsService } from '../../services/subscription.service';
 import { showToast } from 'src/utils';
 import { setCommentRange } from 'typescript';
+import { SocketContext } from 'src/contexts/socket/SocketContext';
 
 const SubscriptionList = () => {
+    const { socket } = useContext(SocketContext)
+
     const [subsList, setSubsList] = useState<any>(null);
     const [dataLoading, setDataLoading] = useState<boolean>(false);
     const [rejectionModal, setRejectionModal] = useState<boolean>(false);
@@ -85,6 +88,12 @@ const SubscriptionList = () => {
             </form>
         </Modal>
     );
+
+
+    useEffect(() => {
+        socket?.emit('shake', "HELLO")
+        socket?.on('shake_data', data => console.log(data))
+    }, []);
 
 
     useEffect(() => {

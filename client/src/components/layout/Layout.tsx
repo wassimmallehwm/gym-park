@@ -1,11 +1,25 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { SocketContext } from 'src/contexts/socket/SocketContext'
 import { AuthContext } from '../../contexts/auth/AuthContext'
 import Navbar from './navbar/Navbar'
 import Sidebar from './sidebar/Sidebar'
 
 const Layout = ({ children }: any) => {
     const { user } = useContext(AuthContext)
+    const { socket, connect, disconnect } = useContext(SocketContext)
     const [isSidebarOpen, openSidebar] = useState<boolean>(false)
+
+    useEffect(() => {
+        if(user){
+            disconnect()
+            const user_roles = user.roles.map((elem: any) => elem.label)
+            connect(user_roles)
+        }
+
+        return () => {
+            disconnect()
+        }
+    }, [])
 
     const toggleSidebar = () => {
         openSidebar(prev => !prev)

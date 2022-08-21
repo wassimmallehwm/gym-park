@@ -12,13 +12,19 @@ const NotificationSchema = new mongoose.Schema({
         required: true,
         unique: false,
     },
+    roles: {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: false,
+        unique: false,
+        ref: "Role",
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: false,
         unique: false,
         ref: "User",
     },
-    relatedTo: {
+    resource: {
         type: String,
         required: true,
         unique: false,

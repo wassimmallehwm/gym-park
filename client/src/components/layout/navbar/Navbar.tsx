@@ -1,8 +1,12 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../../contexts/auth/AuthContext'
 import { FaBars, FaSignOutAlt } from 'react-icons/fa'
+import { SocketContext } from 'src/contexts/socket/SocketContext'
+import { showToast, showNotif } from 'src/utils'
+import toast from 'react-hot-toast'
+import { Notification } from '../../../shared/components'
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
@@ -16,12 +20,24 @@ const Navbar = ({
     toggleSidebar
 }: NavbarProps) => {
     const { logout } = useContext(AuthContext)
+    const { socket } = useContext(SocketContext)
     const navigate = useNavigate()
 
     const onLogout = () => {
         logout()
         navigate('/login')
     }
+
+    useEffect(() => {
+        socket?.on('notif', data => {
+            showNotif(<Notification notif={data}/>)
+        })
+
+
+        return () => {
+            socket?.off('notif')
+        }
+    }, [socket])
 
     const userNavigation = [
         { name: 'Your Profile', click: onLogout },

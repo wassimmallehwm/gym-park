@@ -1,5 +1,7 @@
 import React, { useReducer } from 'react';
-import { initSocket, SocketContext } from './SocketContext';
+import { io, Socket } from 'socket.io-client';
+import { Config } from 'src/config/Config';
+import { SocketContext } from './SocketContext';
 
 
 const initState = {
@@ -9,12 +11,12 @@ const initState = {
 
 function socketReducer(state: any, action: any) {
     switch (action.type) {
-        case 'SETSOCKET':
+        case 'CONNECT':
             return {
                 ...state,
-                socket: initSocket
+                socket: action.payload
             }
-        case 'CLOSESOCKET':
+        case 'DISCONNECT':
             return {
                 ...state,
                 socket: null
@@ -27,16 +29,30 @@ function socketReducer(state: any, action: any) {
 export const SocketProvider = (props?: any) => {
     const [state, dispatch] = useReducer(socketReducer, initState);
 
-    const setSocket = () => {
-        dispatch({type: 'SETSOCKET'})
+    const connect = (roles: string[] = []) => {
+        const socket = io(
+            Config.getConfig().socketUrl, {
+            transports: ['websocket'],
+            secure: true,
+            autoConnect: true,
+            reconnection: true,
+            rejectUnauthorized: false,
+            reconnectionDelay: 0,
+            reconnectionAttempts: 10,
+        })
+        socket.emit('user_roles', roles)
+        dispatch({
+            type: 'CONNECT',
+            payload: socket
+        })
     }
-    const closeSocket = () => {
-        dispatch({type: 'CLOSESOCKET'})
+    const disconnect = () => {
+        dispatch({type: 'DISCONNECT'})
     }
 
     return (
         <SocketContext.Provider
-            value={{ socket: state.socket, setSocket, closeSocket }}
+            value={{ socket: state.socket, connect, disconnect }}
             {...props}
         />
     )

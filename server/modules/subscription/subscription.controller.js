@@ -2,7 +2,23 @@ const Subscription = require("./subscription.model");
 const Course = require("../course/course.model");
 const errorHandler = require("../../utils/errorHandler");
 const mongoose = require("mongoose");
+const { notif_enums } = require("../../constants/notification");
+const { notif_types } = require("../notification/constants");
+const { sendNotifToAdmins } = require("../notification/notification.service");
 
+const sendNotif = async (io, subId) => {
+  const fullData = await Subscription.findById(subId)
+    .populate({ path: 'user', model: 'User', select: 'firstname lastname' })
+    .populate({ path: 'course', model: 'Course', select: 'label' })
+    .lean().exec();
+  const { SUBJECT, CONTENT } = notif_types[notif_enums.SUBSCRIPTION_REQ_SENT]
+  const notifData = {
+    subject: SUBJECT,
+    body: CONTENT.replace('$user', `${fullData.user.firstname} ${fullData.user.lastname}`).replace('$course', fullData.course.label),
+    resource: "SUBSCRIPTION"
+  }
+  sendNotifToAdmins(io, notifData)
+}
 
 module.exports.create = async (req, res) => {
   try {
@@ -13,6 +29,7 @@ module.exports.create = async (req, res) => {
     }
     const item = new Subscription(req.body);
     const result = await item.save();
+    sendNotif(req.io, result._id)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Subscription creation failed: " + err);

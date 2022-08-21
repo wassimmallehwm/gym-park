@@ -1,11 +1,16 @@
 const Notification = require("./notification.model");
-    const errorHandler = require("../../utils/errorHandler");
+const errorHandler = require("../../utils/errorHandler");
+const { notif_types } = require('./constants');
+const { sendNotifToAdmins } = require("./notification.service");
       
 module.exports.create = async(req, res) => {
   try {
-    const item = new Notification(req.body);
+    //const item = new Notification(req.body);
+    let item = req.notif
 
+    item = new Notification(req.body);
     const result = await item.save();
+    sendNotifToAdmins(req.io, result)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Notification creation failed: " + err);

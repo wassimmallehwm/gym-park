@@ -13,22 +13,30 @@ const toastOptions:
     }
 }
 
-export const showToast = (type: string, text: string) => {
+export const showNotif = (element: any) => {
+    toast.custom((t) => (
+        element
+      ))
+}
+
+export const showToast = (type: string, text: string | Element) => {
     toast.dismiss()
     switch (type) {
         case 'success':
-            toast.success(text, toastOptions);
+            toast.success(text.toString(), toastOptions);
             break;
         case 'error':
-            toast.error(text, toastOptions);
+            toast.error(text.toString(), toastOptions);
             break;
         case 'loading':
-            toast.loading(text, {...toastOptions, duration: 10000});
+            toast.loading(text.toString(), {...toastOptions, duration: 10000});
             break;
         default:
-            toast(text, toastOptions);
+            toast(text.toString(), toastOptions);
     }
 }
+
+
 
 export const dismissAllToasts = () => {
     toast.dismiss()

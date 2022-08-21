@@ -9,15 +9,16 @@ import { Button } from '../../../../shared/components';
 import { MessagesService } from '../services';
 import { showToast } from '../../../../utils';
 import MessageItem from './message-item/MessageItem';
+import { SocketContext } from 'src/contexts/socket/SocketContext';
 
 
 const ChannelMessages = () => {
 
   let { id } = useParams();
   const { user } = useContext(AuthContext)
+  const { socket } = useContext(SocketContext)
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<any[]>([])
-  const [socket, setSocket] = useState<Socket | null>()
   const messagesService = new MessagesService();
 
   const scrollRef = useRef<any>();
@@ -48,23 +49,7 @@ const ChannelMessages = () => {
 
 
   useEffect(() => {
-    setSocket(io(
-      Config.getConfig().socketUrl, {
-      transports: ['websocket'],
-      secure: true,
-      autoConnect: true,
-      reconnection: false,
-      upgrade: false,
-      rejectUnauthorized: false,
-      reconnectionDelay: 0,
-      reconnectionAttempts: 10,
-    }))
     getMessagesList()
-
-    return () => {
-      socket?.disconnect()
-      setSocket(null)
-    }
   }, [])
 
   const appendMessage = (data: any) => {

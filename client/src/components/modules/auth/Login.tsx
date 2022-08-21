@@ -5,9 +5,11 @@ import { AuthContext } from '../../../contexts/auth/AuthContext';
 import { authenticate } from './auth.service';
 //import './login.css'
 import logo from '../../../assets/logo.png'
+import { SocketContext } from 'src/contexts/socket/SocketContext';
 
 const Login = () => {
     const { login } = useContext(AuthContext)
+    const { connect } = useContext(SocketContext)
     const navigate = useNavigate();
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -27,6 +29,8 @@ const Login = () => {
         authenticate(loginInfo).then(
             res => {
                 login(res.data)
+                const user_roles = res.data.roles.map((elem: any) => elem.label)
+                connect(user_roles)
                 navigate('/')
             },
             error => {
