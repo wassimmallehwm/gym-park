@@ -5,13 +5,13 @@ import { Config } from '../../config/Config';
 
 export interface SocketContextInterface {
     socket: Socket | null;
-    connect: (roles?: string[]) => void;
+    connect: (userId: string, roles?: string[]) => void;
     disconnect: () => void;
 }
 
 export const SocketContextDefaults: SocketContextInterface = {
     socket: null,
-    connect: (roles?: string[]) => null,
+    connect: (userId: string, roles?: string[]) => null,
     disconnect: () => null
 };
 

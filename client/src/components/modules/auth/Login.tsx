@@ -30,7 +30,7 @@ const Login = () => {
             res => {
                 login(res.data)
                 const user_roles = res.data.roles.map((elem: any) => elem.label)
-                connect(user_roles)
+                connect(res.data._id, user_roles)
                 navigate('/')
             },
             error => {

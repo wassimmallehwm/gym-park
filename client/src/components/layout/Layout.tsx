@@ -13,7 +13,7 @@ const Layout = ({ children }: any) => {
         if(user){
             disconnect()
             const user_roles = user.roles.map((elem: any) => elem.label)
-            connect(user_roles)
+            connect(user._id, user_roles)
         }
 
         return () => {

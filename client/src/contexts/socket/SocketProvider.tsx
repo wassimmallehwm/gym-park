@@ -29,7 +29,7 @@ function socketReducer(state: any, action: any) {
 export const SocketProvider = (props?: any) => {
     const [state, dispatch] = useReducer(socketReducer, initState);
 
-    const connect = (roles: string[] = []) => {
+    const connect = (userId: string, roles: string[] = []) => {
         const socket = io(
             Config.getConfig().socketUrl, {
             transports: ['websocket'],
@@ -39,6 +39,9 @@ export const SocketProvider = (props?: any) => {
             rejectUnauthorized: false,
             reconnectionDelay: 0,
             reconnectionAttempts: 10,
+            query: {
+                userId
+            }
         })
         socket.emit('user_roles', roles)
         dispatch({

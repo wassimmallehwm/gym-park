@@ -1,24 +1,8 @@
 const Subscription = require("./subscription.model");
 const Course = require("../course/course.model");
 const errorHandler = require("../../utils/errorHandler");
-const mongoose = require("mongoose");
-const { notif_enums } = require("../../constants/notification");
-const { notif_types } = require("../notification/constants");
-const { sendNotifToAdmins } = require("../notification/notification.service");
+const { sendSubscriptionReq, sendSubscriptionReqAprroved, sendSubscriptionReqRejected } = require("../notification/notification.service");
 
-const sendNotif = async (io, subId) => {
-  const fullData = await Subscription.findById(subId)
-    .populate({ path: 'user', model: 'User', select: 'firstname lastname' })
-    .populate({ path: 'course', model: 'Course', select: 'label' })
-    .lean().exec();
-  const { SUBJECT, CONTENT } = notif_types[notif_enums.SUBSCRIPTION_REQ_SENT]
-  const notifData = {
-    subject: SUBJECT,
-    body: CONTENT.replace('$user', `${fullData.user.firstname} ${fullData.user.lastname}`).replace('$course', fullData.course.label),
-    resource: "SUBSCRIPTION"
-  }
-  sendNotifToAdmins(io, notifData)
-}
 
 module.exports.create = async (req, res) => {
   try {
@@ -29,7 +13,13 @@ module.exports.create = async (req, res) => {
     }
     const item = new Subscription(req.body);
     const result = await item.save();
-    sendNotif(req.io, result._id)
+
+    const fullData = await Subscription.findById(result._id)
+    .populate({ path: 'user', model: 'User', select: 'firstname lastname' })
+    .populate({ path: 'course', model: 'Course', select: 'label' })
+    .lean().exec();
+    sendSubscriptionReq(req.io, fullData)
+
     return res.status(200).json(result);
   } catch (err) {
     console.error("Subscription creation failed: " + err);
@@ -104,6 +94,7 @@ module.exports.approve = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await treateSubScription(id, req.user, true)
+    sendSubscriptionReqAprroved(req.io, result.user)
 
     await Course.updateOne(
       { _id: result.course },
@@ -121,6 +112,7 @@ module.exports.reject = async (req, res) => {
     const { id } = req.params;
     const result = await treateSubScription(id, req.user, false, req.body.comment)
 
+    sendSubscriptionReqRejected(req.io, result.user, req.body.comment)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Subscription reject failed: " + err);

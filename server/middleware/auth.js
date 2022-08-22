@@ -60,9 +60,10 @@ module.exports.withRoles = async (req, res, next) => {
         .exec();
         let roles = []
         user.roles.forEach(role => {
-            if(role.label != "ADMIN"){
-                roles.push(role)
-            }
+            // if(role.label != "ADMIN"){
+            //     roles.push(role)
+            // }
+            roles.push(role)
         });
         req.roles = roles
         next();

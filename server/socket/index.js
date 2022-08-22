@@ -29,7 +29,8 @@ const ioConfig = (io) => {
     }
 
     io.on('connect', (socket) => {
-        console.log("User connected : ", socket.id)
+        console.log("User connected : ", socket.handshake.query.userId)
+        socket.join(socket.handshake.query.userId)
 
         socket.on('join_channel', channelId => {
             socket.join(channelId)

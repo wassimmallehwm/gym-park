@@ -9,11 +9,11 @@ module.exports.notif_types = {
         CONTENT: `$user ${sub_req_new} $course`
     },
     [notif_enums.SUBSCRIPTION_REQ_APPROVED]: {
-        SUBJECT: 'Subscription request',
+        SUBJECT: 'Subscription request approved',
         CONTENT: `Congratulations, ${sub_req_def} approved!`
     },
     [notif_enums.SUBSCRIPTION_REQ_REJECTED]: {
-        SUBJECT: 'Subscription request',
+        SUBJECT: 'Subscription request rejected',
         CONTENT: `Unfortunately, ${sub_req_def} rejected! \n $reason.`
     }
 }
