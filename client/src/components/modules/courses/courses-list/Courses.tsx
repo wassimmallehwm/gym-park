@@ -200,7 +200,7 @@ const Courses = () => {
 
 
     const primeColumns = [
-        { field: 'poster', header: 'Poster', body: posterRender, filter: true, sortable: true },
+        { field: 'poster', header: '', body: posterRender },
         { field: 'label', header: 'Label', filter: true, sortable: true },
         { field: 'date', header: 'Start date', body: dateRender, sortable: true },
         { field: 'createdAt', header: 'Created at', body: dateTimeRender, sortable: true },

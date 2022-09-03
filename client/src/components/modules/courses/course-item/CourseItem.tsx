@@ -4,16 +4,8 @@ import { FaUsers } from 'react-icons/fa'
 import { courseImage } from 'src/utils/filePath'
 import { SubscriptionsService } from '../../subscription/services/subscription.service'
 import { showToast } from 'src/utils'
+import CourseLevelBadge from '../course-level-badge/CourseLevelBadge'
 
-const levelColor = (level: string) => {
-    let color = 'success'
-    if (level == 'ADVANCED') {
-        color = 'secondary'
-    } else if (level == 'INTERMEDIATE') {
-        color = 'primary'
-    }
-    return `text-${color}-500 bg-${color}-50 border border-${color}-500`
-}
 
 const CourseItem = ({
     course,
@@ -50,14 +42,12 @@ const CourseItem = ({
             <div className='p-4 bg-white w-full rounded-b-lg'>
                 <h6 className='text-2xl text-center'> {course.label} </h6>
                 <div className='flex items-center justify-between mt-4'>
-                    <span className={`flex items-center gap-1 text-xs p-2 rounded-2xl ${levelColor(course.level)}`}>
-                        {course.level}
-                    </span>
+                    <CourseLevelBadge level={course.level}/>
                     {
                         isSubscribed ? (
                             <span className='flex items-center mx-2 gap-1'>
                                 <FaUsers />
-                                {course.participants.length}
+                                {course.participants_count}
                             </span>
                         ) : (
                             <Button onClick={onSubscribe} color='primary'>

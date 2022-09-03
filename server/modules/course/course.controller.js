@@ -85,7 +85,8 @@ module.exports.getList = async (req, res) => {
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
-      sort: {}
+      sort: {},
+      //select: '-participants -coachs'
 
     };
 
@@ -97,13 +98,14 @@ module.exports.getList = async (req, res) => {
 
     let query = {}
 
-    if(req.roles && req.roles.length > 0){
+    if (req.roles && req.roles.length > 0) {
+      query["$or"] = []
       req.roles.forEach(role => {
-        if(role.label == "COACH"){
-          query.coachs = mongoose.Types.ObjectId(req.user)
+        if (role.label == "COACH") {
+          query["$or"].push({coachs: mongoose.Types.ObjectId(req.user)})
         }
-        if(role.label == "USER"){
-          query.participants = mongoose.Types.ObjectId(req.user)
+        if (role.label == "USER") {
+          query["$or"].push({participants: mongoose.Types.ObjectId(req.user)})
         }
       });
     }
@@ -196,10 +198,13 @@ module.exports.removeCourseMedia = async (req, res, next) => {
 module.exports.addCourseParticipant = async (req, res, next) => {
   try {
     const { courseId, participantId } = req.body;
-    
+
     await Course.updateOne(
       { _id: courseId },
-      { $push: { participants: participantId } });
+      {
+        $push: { participants: participantId },
+        $inc: { participants_count: 1 }
+      });
 
     const result = await getFullCourseData(courseId)
     return res.status(200).json(result);
@@ -213,10 +218,13 @@ module.exports.addCourseParticipant = async (req, res, next) => {
 module.exports.removeCourseParticipant = async (req, res, next) => {
   try {
     const { courseId, participantId } = req.params;
-    
+
     await Course.updateOne(
       { _id: courseId },
-      { $pull: { participants: participantId } });
+      { 
+        $pull: { participants: participantId },
+        $inc: { participants_count: -1 }
+      });
 
     const result = await getFullCourseData(courseId)
     return res.status(200).json(result);
@@ -232,10 +240,13 @@ module.exports.removeCourseParticipant = async (req, res, next) => {
 module.exports.addCourseCoach = async (req, res, next) => {
   try {
     const { courseId, coachId } = req.body;
-    
+
     await Course.updateOne(
       { _id: courseId },
-      { $push: { coachs: coachId } });
+      { 
+        $push: { coachs: coachId },
+        $inc: { coachs_count: 1 }
+      });
 
     const result = await getFullCourseData(courseId)
     return res.status(200).json(result);
@@ -249,10 +260,13 @@ module.exports.addCourseCoach = async (req, res, next) => {
 module.exports.removeCourseCoach = async (req, res, next) => {
   try {
     const { courseId, coachId } = req.params;
-    
+
     await Course.updateOne(
       { _id: courseId },
-      { $pull: { coachs: coachId } });
+      { 
+        $pull: { coachs: coachId },
+        $inc: { coachs_count: -1 }
+      });
 
     const result = await getFullCourseData(courseId)
     return res.status(200).json(result);

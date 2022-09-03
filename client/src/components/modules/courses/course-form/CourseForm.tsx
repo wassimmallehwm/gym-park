@@ -79,7 +79,7 @@ const CourseForm = ({
                 </label>
                 <select name="level" value={level} onChange={onChange}
                     className="w-full p-2 border border-gray-300 rounded mt-1">
-                    <option disabled selected>Select the course level</option>
+                    <option disabled value=''>Select the course level</option>
                     <option value='BEGINER'>Beginner</option>
                     <option value='INTERMEDIATE'>Intermediate</option>
                     <option value='ADVANCED'>Advanced</option>
@@ -87,7 +87,7 @@ const CourseForm = ({
             </div>
             <div>
                 <label className="text-sm font-bold text-gray-600 block">
-                    Date du cours
+                    Course start date
                 </label>
                 <input type="date" name="date" value={moment(date).format('YYYY-MM-DD')} onChange={onChange}
                     className="w-full p-2 border border-gray-300 rounded mt-1" />

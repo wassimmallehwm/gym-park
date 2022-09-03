@@ -15,9 +15,9 @@ module.exports.create = async (req, res) => {
     const result = await item.save();
 
     const fullData = await Subscription.findById(result._id)
-    .populate({ path: 'user', model: 'User', select: 'firstname lastname' })
-    .populate({ path: 'course', model: 'Course', select: 'label' })
-    .lean().exec();
+      .populate({ path: 'user', model: 'User', select: 'firstname lastname' })
+      .populate({ path: 'course', model: 'Course', select: 'label' })
+      .lean().exec();
     sendSubscriptionReq(req.io, fullData)
 
     return res.status(200).json(result);
@@ -98,7 +98,10 @@ module.exports.approve = async (req, res) => {
 
     await Course.updateOne(
       { _id: result.course },
-      { $push: { participants: result.user } });
+      {
+        $push: { participants: result.user },
+        $inc: { participants_count: 1 }
+      });
     return res.status(200).json(result);
   } catch (err) {
     console.error("Subscription approve failed: " + err);

@@ -2,15 +2,18 @@ import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FaBell } from 'react-icons/fa'
 import { NotificationsService } from 'src/components/modules/notifications/services/notification.service'
-import { Notification } from '../../../../shared/components'
 import { SocketContext } from 'src/contexts/socket/SocketContext'
 import { showNotif } from 'src/utils'
+import { NotificationItem, NotificationViewer } from 'src/components/modules/notifications'
+import { Modal } from '../../../../shared/components'
 
 const Notifications = () => {
     const { socket } = useContext(SocketContext)
     const notificationsService = new NotificationsService()
     const [list, setList] = useState<any[]>([])
     const [notifCount, setNotifCount] = useState<number>(0)
+    const [viewNotifModal, setViewNotifModal] = useState<boolean>(false)
+    const [currentNotif, setCurrentNotif] = useState<any>()
 
     const getTopFiveNotifs = () => {
         notificationsService.findTopFive().then(
@@ -30,7 +33,14 @@ const Notifications = () => {
         }
     }
 
-    const readNotif = async (notif: any) => {
+    const closeViewNotifModal = () => {
+        setViewNotifModal(false)
+        setCurrentNotif(null)
+    }
+
+    const viewNotif = async (notif: any) => {
+        setCurrentNotif(notif)
+        setViewNotifModal(true)
         if(!notif.read){
             try{
                 await notificationsService.read(notif._id)
@@ -57,7 +67,7 @@ const Notifications = () => {
     useEffect(() => {
         socket?.on('notif', data => {
             setNotifCount(prev => prev + 1)
-            showNotif(<Notification notif={data} />)
+            showNotif(<NotificationItem notif={data} />)
             setList(prev => [data, ...prev])
         })
 
@@ -67,8 +77,15 @@ const Notifications = () => {
         }
     }, [socket])
 
+    const _viewNotifModal = (
+        <Modal open={viewNotifModal} cancel={closeViewNotifModal} title={currentNotif?.subject}>
+            <NotificationViewer notif={currentNotif}/>
+        </Modal>
+    )
+
     return (
         <Menu as="div" className="ml-3 relative">
+            {_viewNotifModal}
             <div>
                 <Menu.Button onClick={() => readAll()} className="max-w-xs bg-transparent rounded-full flex items-center text-sm focus:outline-none focus:ring-0">
                     <span className="sr-only">Notifications</span>
@@ -95,11 +112,13 @@ const Notifications = () => {
                     {
                         list.length > 0 ? 
                         list.map((item) => (
-                            <Menu.Item key={item._id} as="div" onClick={() => readNotif(item)} >
-                                <Notification notif={item} active={!item.read} />
+                            <Menu.Item key={item._id} as="div" onClick={() => viewNotif(item)} >
+                                <NotificationItem notif={item} active={!item.read} />
                             </Menu.Item>
                         )) : (
-                            <p>Empty</p>
+                            <div className='flex items-center justify-center h-20'>
+                                No notifications available
+                            </div>
                         )
                     }
                 </Menu.Items>

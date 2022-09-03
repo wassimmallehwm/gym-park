@@ -1,11 +1,12 @@
 import React, { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { FaExclamation, FaTimes } from 'react-icons/fa'
+import Button from './Button'
 
 interface ModalProps {
     open: boolean
+    cancel: any
     confirm?: any
-    cancel?: any
     title?: string
     color?: string
     footerBtns?: boolean
@@ -16,8 +17,8 @@ interface ModalProps {
 
 const Modal = ({
     open,
-    confirm,
     cancel,
+    confirm,
     title,
     color = 'blue', //indigo
     footerBtns,
@@ -64,7 +65,9 @@ const Modal = ({
                                         </h4>
                                     ) : null
                                 }
-                                <FaTimes className='cursor-pointer' onClick={cancel} />
+                                <Button onClick={cancel} color='primary' outline rounded>
+                                    <FaTimes className='cursor-pointer' />
+                                </Button>
                             </div>
                             <hr />
                             <div className='p-0 relative'>

@@ -7,12 +7,6 @@ const CourseSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    coachs: {
-        type: [mongoose.Schema.Types.ObjectId],
-        required: true,
-        unique: false,
-        ref: "User",
-    },
     description: {
         type: String,
         required: false,
@@ -28,12 +22,26 @@ const CourseSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    coachs: {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: true,
+        unique: false,
+        ref: "User",
+    },
     participants: {
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         unique: false,
         default: [],
         ref: "User",
+    },
+    coachs_count: {
+        type: Number,
+        default: 0,
+    },
+    participants_count: {
+        type: Number,
+        default: 0
     },
     date: {
         type: Date,

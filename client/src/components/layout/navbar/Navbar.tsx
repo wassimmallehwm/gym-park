@@ -6,7 +6,6 @@ import { FaBars, FaSignOutAlt } from 'react-icons/fa'
 import { SocketContext } from 'src/contexts/socket/SocketContext'
 import { showToast, showNotif } from 'src/utils'
 import toast from 'react-hot-toast'
-import { Notification } from '../../../shared/components'
 import { userImage } from 'src/utils/filePath'
 import Notifications from './notifications/Notifications'
 

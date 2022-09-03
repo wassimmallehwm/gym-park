@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Notification = ({
+const NotificationItem = ({
     notif,
     active
 }: any) => {
@@ -33,4 +33,4 @@ const Notification = ({
     )
 }
 
-export default Notification
+export default NotificationItem

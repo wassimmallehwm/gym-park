@@ -9,7 +9,6 @@ import Modal from "./Modal";
 import PageTitle from "./PageTitle";
 import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
-import Notification from './Notification';
 
 export {
   Loader,
@@ -22,6 +21,5 @@ export {
   Spinner,
   DataGrid,
   PageTitle,
-  ProgressBar,
-  Notification
+  ProgressBar
 };
