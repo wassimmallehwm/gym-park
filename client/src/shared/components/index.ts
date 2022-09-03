@@ -6,6 +6,7 @@ import ErrorFallback from "./ErrorFallback";
 import Grid from "./Grid";
 import Loader from "./Loader";
 import Modal from "./Modal";
+import NoData from "./NoData";
 import PageTitle from "./PageTitle";
 import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
@@ -21,5 +22,6 @@ export {
   Spinner,
   DataGrid,
   PageTitle,
-  ProgressBar
+  ProgressBar,
+  NoData
 };
