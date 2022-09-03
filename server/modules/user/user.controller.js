@@ -6,10 +6,11 @@ const userCreation = require("../../mails/templates/userCreation");
 const { sendEmail } = require("../../mails/send");
 
 function generateToken(id) {
-  return token = jwt.sign({
-    _id: id
-  }, process.env.JWT_SECRET,
-    { expiresIn: '1d' })
+  return token = jwt.sign(
+    { _id: id },
+    process.env.JWT_SECRET,
+    //{ expiresIn: '1d' }
+  )
 }
 
 async function hashPassword(password) {
@@ -211,10 +212,10 @@ module.exports.search = async (req, res) => {
       .select('firstname lastname imagePath')
       .limit(5)
       .exec();
-      if(roles && roles !== ""){
-        const _roles = roles.split(',')
-        users = users.filter(user => user.roles.find(item => _roles.includes(item.label)))
-      }
+    if (roles && roles !== "") {
+      const _roles = roles.split(',')
+      users = users.filter(user => user.roles.find(item => _roles.includes(item.label)))
+    }
     res.status(200).json(users);
   } catch (e) {
     console.log('ERROR', e);
