@@ -11,6 +11,7 @@ const globalMiddelwares = (app, dir) => {
   app.use(morgan('dev'));
 
   app.use('/api/users', require('../modules/user'))
+  app.use('/api/dashboard', require('../modules/dashboard'))
   app.use('/api/channels', require('../modules/channel'))
   app.use('/api/messages', require('../modules/message'))
   app.use('/api/medias', require('../modules/media'))

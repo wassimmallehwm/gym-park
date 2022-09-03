@@ -60,9 +60,24 @@ module.exports.withRoles = async (req, res, next) => {
         .exec();
         let roles = []
         user.roles.forEach(role => {
-            // if(role.label != "ADMIN"){
-            //     roles.push(role)
-            // }
+            if(role.label != "ADMIN"){
+                roles.push(role)
+            }
+            //roles.push(role)
+        });
+        req.roles = roles
+        next();
+    } catch(e){
+        res.status(500).json({error: e});
+    }
+}
+module.exports.withAdminRoles = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.user)
+        .populate({ path: 'roles', model: 'Role', select: 'label' })
+        .exec();
+        let roles = []
+        user.roles.forEach(role => {
             roles.push(role)
         });
         req.roles = roles
