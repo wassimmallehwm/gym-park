@@ -19,5 +19,9 @@ export class ForumService extends BaseService {
     list(query?: any){
         return this.httpClient(this.httpUrl('list'), "GET", query);
     }
+    
+    deleteForumPost(id: string){
+        return this.httpClient(this.httpUrl(id), "DELETE");
+    }
 }
 

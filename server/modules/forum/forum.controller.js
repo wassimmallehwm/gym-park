@@ -1,5 +1,6 @@
 const Forum = require("./forum.model");
-    const errorHandler = require("../../utils/errorHandler");
+const errorHandler = require("../../utils/errorHandler");
+const { deleteResourcefile } = require("../../utils/fileDelete");
       
 module.exports.create = async(req, res) => {
   try {
@@ -92,7 +93,9 @@ module.exports.remove = async(req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await Forum.deleteOne({ _id: id});
+    const result = await Forum.findById(id);
+    await Forum.deleteOne({ _id: id});
+    deleteResourcefile('forum', '', result.mediaPath)
     return res.status(200).json(result);
   } catch (err) {
     console.error("Forum delete failed: " + err);

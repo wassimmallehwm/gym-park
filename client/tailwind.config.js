@@ -36,15 +36,15 @@ module.exports = {
   },
   safelist: [
     {
-      pattern: /bg-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /bg-(primary|success|secondary|slate)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
     {
-      pattern: /text-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /text-(primary|success|secondary|slate)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
     {
-      pattern: /border-(primary|success|secondary)-(50|100|200|300|400|500|600)/,
+      pattern: /border-(primary|success|secondary|slate)-(50|100|200|300|400|500|600)/,
       variants: ['lg', 'hover', 'focus', 'lg:hover'],
     },
   ],

@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React, { useEffect, useRef, useState } from 'react'
+import EventsEmitter from 'src/utils/events'
 import { NoData, PageTitle } from '../../../../shared/components'
 import { showToast } from '../../../../utils'
 import ForumForm from '../forum-form/ForumForm'
@@ -57,6 +58,23 @@ const ForumPage = () => {
             console.log(error)
         }
     }
+
+    const onForumDelete = async (postId: string) => {
+        try {
+            await forumService.deleteForumPost(postId)
+            setForumList((prev: any[]) => prev.filter((elem: any) => elem._id != postId))
+            showToast('success', 'Post deleted successfully')
+        } catch (error: any) {
+            showToast('error', 'An error occured while deleting a post')
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        EventsEmitter.on('forum-post-delete', async (data: any) => {
+            await onForumDelete(data)
+        })
+    }, [])
 
     useEffect(() => {
         getForumList()

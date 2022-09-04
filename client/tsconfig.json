@@ -20,11 +20,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "paths": {
-      "@shared/*": [
-        "src/shared/*"
-      ]
-    }
+    // "paths": {
+    //   "@shared/*": [
+    //     "src/shared/*"
+    //   ]
+    // }
   },
   "include": [
     "src"
