@@ -85,7 +85,7 @@ const Login = () => {
             <div className="max-w-md w-full mx-auto flex flex-col items-center">
                 <img src={logo} className="w-32 text-center" />
                 <div className="text-3xl font-bold text-gray-800 text-center">
-                    Gym Park
+                    Gym Park | Login
                 </div>
             </div>
             <div className="max-w-md w-full mx-auto mt-4 bg-white p-8 border border-gray-300">
@@ -104,7 +104,12 @@ const Login = () => {
                         <input type="password" name="password" onChange={onChange} value={password}
                             className="w-full p-2 border border-gray-300 rounded mt-1" />
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col justify-center">
+                        <div>
+                            <button type="button" onClick={() => navigate('/signup')} className="font-medium text-sm text-primary-500">
+                                No account ? Join us !
+                            </button>
+                        </div>
                         <div>
                             <a href="#" className="font-medium text-sm text-primary-500">
                                 Forgot password ?

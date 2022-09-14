@@ -8,3 +8,6 @@ const baseService = new BaseService()
 export const authenticate = (data) => {
     return baseService.httpClient(API_URL + "login", 'POST', data)
 }
+export const signup = (data) => {
+    return baseService.httpClient(API_URL + "signup", 'POST', data)
+}

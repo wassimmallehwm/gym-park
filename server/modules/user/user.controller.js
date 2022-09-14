@@ -111,6 +111,43 @@ module.exports.create = async (req, res) => {
   }
 };
 
+module.exports.signup = async (req, res) => {
+  try {
+    const password = Math.random().toString(36).slice(-12);
+    let userData = req.body
+    userData.enabled = true;
+    let roles = [];
+    userData.roles.forEach(role => roles.push(role._id))
+    userData.roles = roles
+    console.log("PASSWORD : ", password)
+    userData.password = await hashPassword(password)
+    userData._id = undefined
+
+    //SEND PASSWORD BY MAIL
+    const item = new User(req.body);
+
+    const result = await item.save();
+    const { firstname, lastname, email } = result
+    var mailOptions = {
+      to: email,
+      subject: "Gym Park - Account created",
+      html: userCreation(firstname, lastname, email, password)
+    };
+    const mailCallback = async (error, info) => {
+      if (!error) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json({ error })
+      }
+    }
+    sendEmail(mailOptions, mailCallback);
+  } catch (err) {
+    console.error("User creation failed: " + err);
+    const { status, message } = errorHandler(err)
+    res.status(status).json({ message, entity: 'User' })
+  }
+};
+
 
 module.exports.getAll = async (req, res) => {
   try {
