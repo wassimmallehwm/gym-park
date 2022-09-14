@@ -34,7 +34,9 @@ const ForumItem = ({
                 <div className='flex align-center justify-center px-4 -mt-2'>
                     {
                         (isAdmin || isOwner) && 
-                        <ActionsDropdown postId={post._id}/>
+                        <ActionsDropdown postId={post._id}
+                        isAdmin={isAdmin} 
+                        isOwner={isOwner} />
                         
                     }
                 </div>

@@ -1,27 +1,50 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Button } from '../../../../../shared/components'
 import React, { Fragment } from 'react'
-import { FaEllipsisV, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaEllipsisV, FaTrash } from 'react-icons/fa'
 import EventsEmitter from 'src/utils/events'
 
 interface ActionsDropdownProps {
     postId: string
+    isAdmin: boolean
+    isOwner: boolean
 }
 
 const ActionsDropdown = ({
-    postId
+    postId,
+    isAdmin,
+    isOwner
 }: ActionsDropdownProps) => {
 
     //DELETE POST
     //deleteForumPost
     //SEND EVENT TO UPDATE POSTS LIST
 
+    const onEditClick = () => {
+        EventsEmitter.emit('forum-post-edit', postId)
+    }
+
     const onDeleteClick = () => {
         EventsEmitter.emit('forum-post-delete', postId)
     }
 
     const list: any = [
-        { id: 0, label: 'Delete', color: 'secondary', click: onDeleteClick }
+        { 
+            id: 0,
+            display: isOwner,
+            label: 'Edit',
+            icon: FaEdit,
+            color: 'primary',
+            click: onEditClick 
+        },
+        { 
+            id: 1,
+            display: isAdmin || isOwner,
+            label: 'Delete',
+            icon: FaTrash,
+            color: 'secondary',
+            click: onDeleteClick 
+        }
     ]
     return (
         <Menu as="div" className="ml-3 relative">
@@ -44,12 +67,12 @@ const ActionsDropdown = ({
             >
                 <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-slate-50 border border-slate-300 ring-0 focus:outline-none">
                     {
-                        list.map((item: any) => (
+                        list.map((item: any) => item.display &&  (
                             <Menu.Item key={item.id} as="div"
                                 onClick={item.click}
                                 className="p-2 cursor-pointer hover:bg-slate-100" >
                                 <div className={`flex items-center text-${item.color}-500`}>
-                                    <FaTrash className='mx-2' />
+                                    <item.icon className='mx-2' />
                                     <span>
                                         {item.label}
                                     </span>

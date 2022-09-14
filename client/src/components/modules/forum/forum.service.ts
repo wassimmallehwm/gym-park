@@ -20,6 +20,10 @@ export class ForumService extends BaseService {
         return this.httpClient(this.httpUrl('list'), "GET", query);
     }
     
+    editForumPost(id: string, data: any){
+        return this.httpClient(this.httpUrl(id), "PUT", data);
+    }
+    
     deleteForumPost(id: string){
         return this.httpClient(this.httpUrl(id), "DELETE");
     }

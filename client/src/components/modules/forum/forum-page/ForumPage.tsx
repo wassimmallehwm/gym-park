@@ -1,6 +1,6 @@
-import moment from 'moment'
 import React, { useEffect, useRef, useState } from 'react'
 import EventsEmitter from 'src/utils/events'
+import { forumImage } from 'src/utils/filePath'
 import { NoData, PageTitle } from '../../../../shared/components'
 import { showToast } from '../../../../utils'
 import ForumForm from '../forum-form/ForumForm'
@@ -14,12 +14,24 @@ const ForumPage = () => {
     const [forumMedia, setForumMedia] = useState<any>()
     const [mediaPreview, setMediaPreview] = useState<any>()
     const [totalItems, setTotalItems] = useState<number>(0)
+    const [isEdit, setIsEdit] = useState<boolean>(false)
+    const [editPost, setEditPost] = useState<string>()
     const forumService = new ForumService()
+
+    const scrollRef = useRef<any>();
+
+  const scrollToTop = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, 100)
+  }
 
     const resetData = () => {
         setForumData('')
         setMediaPreview(null)
         setForumMedia(null)
+        setIsEdit(false)
+        setEditPost('')
     }
 
 
@@ -46,13 +58,29 @@ const ForumPage = () => {
 
     const onForumCreate = async () => {
         let formData = new FormData();
-        formData.append('media', forumMedia);
+        if(forumMedia){
+            formData.append('media', forumMedia);
+        }
         formData.append('body', forumData)
         try {
-            const result = await forumService.createForumPost(formData)
-            setForumList((prev: any[]) => ([result.data, ...prev]))
+            if(isEdit){
+                let editData: any = {body: forumData} 
+                if(forumMedia){
+                    editData = formData
+                }
+                const { data } = await forumService.editForumPost(editPost!, editData)
+                setForumList((prev: any) => prev.map((elem: any) => {
+                    if(elem._id == data._id){
+                        return data
+                    }
+                    return elem
+                }))
+            } else {
+                const result = await forumService.createForumPost(formData)
+                setForumList((prev: any[]) => ([result.data, ...prev]))
+                showToast('success', 'Post created successfully')
+            }
             resetData()
-            showToast('success', 'Post created successfully')
         } catch (error: any) {
             showToast('error', 'An error occured while creating a post')
             console.log(error)
@@ -70,18 +98,36 @@ const ForumPage = () => {
         }
     }
 
+    const onForumEdit = (data: any) => {
+        scrollToTop()
+        setIsEdit(true)
+        setEditPost(data)
+        const edit = forumList.find((elem: any) => elem._id == data)
+        setForumData(edit.body)
+        setMediaPreview(forumImage(edit.mediaPath))
+    }
+
     useEffect(() => {
         EventsEmitter.on('forum-post-delete', async (data: any) => {
             await onForumDelete(data)
         })
-    }, [])
+        EventsEmitter.on('forum-post-edit', async (data: any) => {
+            //await onForumDelete(data)
+            onForumEdit(data)
+        })
+
+        return () => {
+            EventsEmitter.off('forum-post-delete')
+            EventsEmitter.off('forum-post-edit')
+        }
+    }, [forumList])
 
     useEffect(() => {
         getForumList()
     }, [page])
 
     return (
-        <div className="main-div">
+        <div ref={scrollRef} className="main-div">
             <PageTitle color="primary">Forum</PageTitle>
             <div className='w-11/12 md:w-4/6 lg:w-1/2 mx-auto mt-4'>
                 <ForumForm
@@ -92,6 +138,8 @@ const ForumPage = () => {
                     setMediaPreview={setMediaPreview}
                     setForumData={setForumData}
                     onForumCreate={onForumCreate}
+                    isEdit={isEdit}
+                    cancel={resetData}
                 />
                 <div className='mt-20 flex flex-col gap-8'>
                     {

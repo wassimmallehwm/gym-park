@@ -10,6 +10,8 @@ interface ForumFormProps {
     setMediaPreview: any
     setForumData: any
     onForumCreate: any
+    isEdit: boolean
+    cancel: any
 }
 
 const ForumForm = ({
@@ -19,7 +21,9 @@ const ForumForm = ({
     setForumMedia,
     setMediaPreview,
     setForumData,
-    onForumCreate
+    onForumCreate,
+    isEdit,
+    cancel
 }: ForumFormProps) => {
 
     const mediaRef = useRef<any>();
@@ -67,9 +71,16 @@ const ForumForm = ({
                     }
 
                 </div>
-                <Button title="Create" onClick={onForumCreate} color="primary">
-                    Post
-                </Button>
+                <div>
+                    {
+                        isEdit && <Button title="Create" onClick={cancel} color="secondary">
+                            Cancel
+                        </Button>
+                    }
+                    <Button title="Create" onClick={onForumCreate} color="primary">
+                        Save
+                    </Button>
+                </div>
             </div>
         </div>
     )
