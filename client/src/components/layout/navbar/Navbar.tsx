@@ -25,12 +25,12 @@ const Navbar = ({
 
     const onLogout = () => {
         logout()
-        navigate('/login')
+        navigate('/')
     }
 
     const userNavigation = [
-        { name: 'Your Profile', click: onLogout },
-        { name: 'Settings', click: onLogout },
+        // { name: 'Your Profile', click: onLogout },
+        // { name: 'Settings', click: onLogout },
         { name: 'Sign out', click: onLogout },
     ]
     return (

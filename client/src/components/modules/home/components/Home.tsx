@@ -2,6 +2,7 @@ import React, { lazy, useContext, useState } from 'react'
 import { useEffect } from 'react'
 import { AuthContext } from 'src/contexts'
 import { hasRole } from 'src/utils'
+import GuestHome from './guest-home/GuestHome';
 
 const AdminHome = lazy(() => import('./admin-home/AdminHome'));
 const CoachHome = lazy(() => import('./coach-home/CoachHome'));
@@ -10,6 +11,7 @@ const UserHome = lazy(() => import('./user-home/UserHome'));
 const Home = () => {
   const { user } = useContext(AuthContext)
   const [homePage, setHomePage] = useState<string>('GUEST')
+
 
   const initHomePage = () => {
     if(user && user.roles){
@@ -27,10 +29,6 @@ const Home = () => {
     initHomePage()
   }, [])
 
-  const guestContent = (
-    <div>Home</div>
-  )
-
   const pageContent = () => {
     switch (homePage) {
       case "ADMIN":
@@ -40,7 +38,7 @@ const Home = () => {
       case "USER":
         return <UserHome />
       default: 
-        return guestContent
+        return <GuestHome/>
 
     }
   }
