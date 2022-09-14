@@ -55,7 +55,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Course.findById(id)
-      .select('label description date poster isPrivate')
+      .select('label description date poster isPrivate level')
       .lean().exec();
 
     return res.status(200).json(result);
